@@ -5,7 +5,7 @@ html {
 body {
   background: url("/media/mani_and_me_background.jpg") no-repeat center center
     fixed;
-  background-size: cover;
+  background-size: contain;
   height: calc(100vh - 164px);
   color: #555;
   font-family: "Playfair Display";
@@ -102,5 +102,16 @@ body {
 
   .header-container {
     padding-top: 164px;
+  }
+}
+
+/* pad the top a bit when navbar is collapsed on mobile */
+@media (max-width: 991px) {
+  .header-container {
+    padding-top: 175px;
+  }
+
+  body {
+    height: calc(100vh - 116px);
   }
 }

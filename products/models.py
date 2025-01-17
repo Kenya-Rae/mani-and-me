@@ -2,6 +2,10 @@ from django.db import models
 
 # For frontend categories.
 class Category(models.Model):
+    
+    class Meta: # Change vategory name in admin view
+        verbose_name_plural = 'Categories'
+        
     name = models.CharField(max_length=254)
     friendly_name = models.CharField(max_length=254, null=True, blank=True)
 

@@ -1,7 +1,11 @@
 from django.contrib import admin
-from .models import Product, Category
+from .models import Product, Category, ProductImage
 
 # Admin classes to customise admin view.
+class ProductImageInline(admin.TabularInline):
+    model = ProductImage
+    extra = 1  # Number of empty image inputs to display
+
 class ProductAdmin(admin.ModelAdmin):
     list_display = (
         'category',
@@ -11,7 +15,7 @@ class ProductAdmin(admin.ModelAdmin):
         'image',    
         'rating',
     )
-
+    inlines = [ProductImageInline]  # Add the inline for related product images
     ordering = ('sku',)
 
 class CategoryAdmin(admin.ModelAdmin):

@@ -13,19 +13,53 @@
     <div class="overlay"></div>
     <div class="container-fluid">
         <div class="row">
+            <!-- Carousel Section -->
             <div class="col-12 col-md-6 col-lg-4 offset-lg-2">
-                <div class="image-container my-5">
-                    {% if product.image %}
-                    <a href="{{ product.image.url }}" class="_blank">
-                        <img class="card-img-top img-fluid product-image" src="{{ product.image.url }}" alt="{{ product.name }}">
+                <div id="productCarousel" class="carousel slide my-5" data-ride="carousel">
+                    <div class="carousel-inner">
+                        <!-- Main Product Image -->
+                        {% if product.image %}
+                        <div class="carousel-item active">
+                            <a href="{{ product.image.url }}" target="_blank">
+                                <img src="{{ product.image.url }}" class="d-block w-100 img-fluid product-image" alt="{{ product.name }}">
+                            </a>
+                        </div>
+                        {% elif product.image_url %}
+                        <div class="carousel-item active">
+                            <a href="{{ product.image_url }}" target="_blank">
+                                <img src="{{ product.image_url }}" class="d-block w-100 img-fluid product-image" alt="{{ product.name }}">
+                            </a>
+                        </div>
+                        {% else %}
+                        <div class="carousel-item active">
+                            <a href="{{ MEDIA_URL }}noimage.png" target="_blank">
+                                <img src="{{ MEDIA_URL }}noimage.png" class="d-block w-100 img-fluid product-image" alt="{{ product.name }}">
+                            </a>
+                        </div>
+                        {% endif %}
+
+                        <!-- Related Product Images -->
+                        {% for img in product.images.all %}
+                        <div class="carousel-item">
+                            <a href="{{ img.image.url }}" target="_blank">
+                                <img src="{{ img.image.url }}" class="d-block w-100 img-fluid product-image" alt="Image of {{ product.name }}">
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <!-- Carousel Controls -->
+                    <a class="carousel-control-prev" href="#productCarousel" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
                     </a>
-                    {% else %}
-                    <a href="">
-                        <img class="card-img-top img-fluid product-image" src="{{ MEDIA_URL }}noimage.png" alt="{{ product.name }}">
+                    <a class="carousel-control-next" href="#productCarousel" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
                     </a>
-                    {% endif %}
                 </div>
             </div>
+
+            <!-- Product infomation -->
             <div class="col-12 col-md-6 col-lg-4">
                 <div class="product-details-container mb-5 mt-md-5">
                     <p class="mb-0"><strong>{{ product.name }}</strong></p>

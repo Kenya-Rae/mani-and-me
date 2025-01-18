@@ -81,6 +81,13 @@ body {
   object-fit: cover;
   border-radius: 4px;
 }
+
+.carousel-item img {
+  width: 100%; /* Ensures images scale to fit the container */
+  height: 400px;
+  object-fit: cover; /* Ensures images are not distorted */
+  border-radius: 8px;
+}
 /* -------------------------------- Media Queries */
 
 /* Slightly larger container on xl screens */

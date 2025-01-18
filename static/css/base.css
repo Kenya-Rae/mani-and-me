@@ -88,6 +88,11 @@ body {
   object-fit: cover; /* Ensures images are not distorted */
   border-radius: 8px;
 }
+
+a.category-badge > span.badge:hover {
+  background: #413c3cda !important;
+  color: #fff !important;
+}
 /* -------------------------------- Media Queries */
 
 /* Slightly larger container on xl screens */

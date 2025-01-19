@@ -17,26 +17,32 @@ def all_products(request):
     direction = None
 
     if request.GET:
+        # Handle sorting
         if 'sort' in request.GET:
-            if 'direction' in request.GET:
-                sortkey = request.GET['sort']
-                sort = sortkey
-                if sortkey == 'name':
-                    sortkey = 'lower_name'
-                    products = products.annotate(lower_name=Lower('name'))
-                if sortkey == 'category':
-                    sortkey = 'category_id'
-                if 'direction' in request.GET:
-                    direction = request.GET['direction']
-                    if direction == 'desc':
-                        sort = f'-{sortkey}'
-                products = products.order_by(sortkey)
+            sortkey = request.GET['sort']
+            sort = sortkey
+            if sortkey == 'name':
+                sortkey = 'lower_name'
+                products = products.annotate(lower_name=Lower('name'))
+            elif sortkey == 'category':
+                sortkey = 'category__name'
+            elif sortkey == 'rating':
+                sortkey = 'rating'
 
+            # Handle direction
+            if 'direction' in request.GET:
+                direction = request.GET['direction']
+                if direction == 'desc':
+                    sortkey = f'-{sortkey}'
+            products = products.order_by(sortkey)
+
+        # Handle category filtering
         if 'category' in request.GET:
             categories = request.GET['category'].split(',')
             products = products.filter(category__name__in=categories)
             categories = Category.objects.filter(name__in=categories)
 
+        # Handle search query
         if 'q' in request.GET:
             query = request.GET['q']
             if not query:
@@ -46,6 +52,7 @@ def all_products(request):
             queries = Q(name__icontains=query) | Q(description__icontains=query)
             products = products.filter(queries)
 
+    # Determine current sorting state
     current_sorting = f'{sort}_{direction}'
 
     context = {
@@ -55,7 +62,7 @@ def all_products(request):
         'current_sorting': current_sorting,
     }
 
-    return render (request, 'products/products.html', context)
+    return render(request, 'products/products.html', context)
 
 
 def product_info(request, product_id):

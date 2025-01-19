@@ -174,6 +174,16 @@ a.category-badge > span.badge:hover {
   cursor: pointer;
 }
 
+.toggle-btn {
+  margin-bottom: 10px;
+}
+
+.product-container.list-view .col-12 {
+  /* List View - 1 item per row */
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
 /* -------------------------------- Media Queries */
 
 /* Slightly larger container on xl screens */
@@ -208,5 +218,12 @@ a.category-badge > span.badge:hover {
   body {
     /* Code from Boutique Ado */
     height: calc(100vh - 116px);
+  }
+}
+
+@media (min-width: 576px) {
+  /* Grid View - 4 items per row */
+  .product-container.grid-view .col-sm-6 {
+    width: 25%;
   }
 }

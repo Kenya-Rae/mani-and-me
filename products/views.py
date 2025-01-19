@@ -8,7 +8,7 @@ from .models import Product, Category
 # Create your views here.
 
 def all_products(request):
-    """ View to show products, including filtering and queries - 
+    """ View to show products, including filtering and queries -
     Code used from Boutique Ado """
 
     products = Product.objects.all()
@@ -16,6 +16,11 @@ def all_products(request):
     categories = None
     sort = None
     direction = None
+    view = 'grid'  # Default view
+
+    # Handle (Grid or List) view toggle 
+    if 'view' in request.GET:
+        view = request.GET['view']
 
     if request.GET:
         # Handle sorting
@@ -61,6 +66,7 @@ def all_products(request):
         'search_term': query,
         'current_categories': categories,
         'current_sorting': current_sorting,
+        'view': view,  # Pass the current view state to the template
     }
 
     return render(request, 'products/products.html', context)

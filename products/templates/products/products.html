@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load custom_filters %}
 
 {% block page_header %}
     <div class="container header-container">
@@ -10,11 +11,17 @@
 {% endblock %}
 
 {% block content %}
+<!-- Code used from Boutique Ado. With modifications Title,Description and SKU -->
     <div class="overlay"></div>
     <div class="container-fluid">
         <div class="row">
             <div class="col text-center mt-3">
-                <h2 class="logo-font">Products</h2>
+                <h2 class="logo-font">
+                    Products
+                    {% if current_categories %}
+                        - {{ current_categories|get_friendly_names }}
+                    {% endif %}
+                </h2>
                 {% for c in current_categories %}
                     <a href="{% url 'products' %}?category={{ c.name }}" class="text-muted category-badge text-decoration-none">
                         <span class="p2 mt-2 badge badge-black text-black rounded-2 border border-dark">{{ c.friendly_name }}</span>
@@ -81,9 +88,14 @@
                                             </p>
                                             {% endif %}
                                             {% if product.rating %}
-                                                <small class="text-muted"><i class="fas fa-star mr-1"></i>{{ product.rating }} / 5</small>
+                                                <small class="text-muted"><i class="fas fa-star mr-1"></i>{{ product.rating }} / 5 </small>
                                             {% else %}
                                                 <small class="text-muted">No Rating</small>
+                                            {% endif %}
+                                            {% if product.sku %}
+                                                <p class="text-muted"><i class="fas fa-barcode"></i><strong> {{ product.sku }}</strong></small>
+                                            {% else %}
+                                                <small class="text-muted">No SKU</small>
                                             {% endif %}
                                         </div>
                                     </div>
@@ -123,6 +135,7 @@
 {% endblock %}
 
 {% block postloadjs %}
+<!-- Code used from Boutique Ado -->
     {{ block.super }}
     <script type="text/javascript">
 		$('.btt-link').click(function(e) {
@@ -131,25 +144,25 @@
 	</script>
     
     <script type="text/javascript">
-    $('#sort-selector').change(function () {
-        var selector = $(this);
-        var currentUrl = new URL(window.location);
+        $('#sort-selector').change(function () {
+            var selector = $(this);
+            var currentUrl = new URL(window.location);
 
-        var selectedVal = selector.val();
-        if (selectedVal != "reset") {
-            var sort = selectedVal.split("_")[0];
-            var direction = selectedVal.split("_")[1];
+            var selectedVal = selector.val();
+            if (selectedVal != "reset") {
+                var sort = selectedVal.split("_")[0];
+                var direction = selectedVal.split("_")[1];
 
-            currentUrl.searchParams.set("sort", sort);
-            currentUrl.searchParams.set("direction", direction);
+                currentUrl.searchParams.set("sort", sort);
+                currentUrl.searchParams.set("direction", direction);
 
-            window.location.replace(currentUrl);
-        } else {
-            currentUrl.searchParams.delete("sort");
-            currentUrl.searchParams.delete("direction");
+                window.location.replace(currentUrl);
+            } else {
+                currentUrl.searchParams.delete("sort");
+                currentUrl.searchParams.delete("direction");
 
-            window.location.replace(currentUrl);
-        }
-    });
+                window.location.replace(currentUrl);
+            }
+        });
     </script>
 {% endblock %}

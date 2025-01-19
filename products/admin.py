@@ -7,6 +7,7 @@ class ProductImageInline(admin.TabularInline):
     extra = 1  # Number of empty image inputs to display
 
 class ProductAdmin(admin.ModelAdmin):
+    # Code used from Boutique Ado with slight modication.
     list_display = (
         'category',
         'sku',

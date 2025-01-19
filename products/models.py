@@ -1,9 +1,10 @@
 from django.db import models
 
-# For frontend categories.
+
 class Category(models.Model):
-    
-    class Meta: # Change vategory name in admin view
+    """ For frontend categories. 
+    Code used from Boutique Ado"""
+    class Meta: # Change category name in admin view
         verbose_name_plural = 'Categories'
         
     name = models.CharField(max_length=254)
@@ -15,8 +16,9 @@ class Category(models.Model):
     def get_friendly_name(self):
         return self.friendly_name
 
-# For products within the db.
 class Product(models.Model):
+    """ For products within the db.
+    Code used from Boutique Ado"""
     category = models.ForeignKey('Category', null=True, blank=True, on_delete=models.SET_NULL) 
     sku = models.CharField(max_length=254, null=True, blank=True)
     name = models.CharField(max_length=254)
@@ -30,6 +32,7 @@ class Product(models.Model):
         return self.name
 
 class ProductImage(models.Model):
+    """ For multiple images per product"""
     product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='product_images/')
 

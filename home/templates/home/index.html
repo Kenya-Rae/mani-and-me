@@ -11,6 +11,7 @@
 
 {% block content %}
 <div class="container h-100 home-content">
+    <!-- Code used from Boutique Ado. With some addaption -->
     <div class="row h-100">
         <div class="col-7 col-md-6 my-auto">
             <h1 class="display-4 logo-font text-black">
@@ -18,7 +19,7 @@
             </h1>
             <div class="my-5">
                 <h4>
-                    <a href="{% url 'products' %}" class="shop-now-button btn btn-lg rounded-0 text-uppercase py-3">Shop Now!</a>
+                    <a href="{% url 'products' %}" class="shop-button btn btn-md rounded-2 text-uppercase py-3">Shop Now!</a>
                 </h4>
             </div>
         </div>
@@ -26,23 +27,24 @@
 </div>
 
 <div class="container w-100">
+    <!-- Display panel with some qualities of the site -->
     <div class="row w-100">
         <div class="col-7 col-md-6 my-auto">
             <ul class="tile-panel">
                 <li>
-                    <i class="fa-solid fa-truck"></i> <!-- Font Awesome icon -->
+                    <i class="fa-solid fa-truck"></i>
                     <div class="field-tile">
                         <div class="field_item">Tracked delivery</div>
                     </div>
                 </li>
                 <li>
-                    <i class="fa-solid fa-palette"></i> <!-- Font Awesome icon -->
+                    <i class="fa-solid fa-palette"></i>
                     <div class="field-tile">
                         <div class="field_item">Original designs</div>
                     </div>
                 </li>
                 <li>
-                    <i class="fa-solid fa-gift"></i> <!-- Font Awesome icon -->
+                    <i class="fa-solid fa-gift"></i>
                     <div class="field-tile">
                         <div class="field_item">Gifts for every occasion</div>
                     </div>

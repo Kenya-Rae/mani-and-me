@@ -1,8 +1,10 @@
 html {
+  /* Code from Boutique Ado */
   height: 100%;
 }
 
 body {
+  /* Code from Boutique Ado */
   background: url("/media/mani_and_me_background.jpg") no-repeat center center
     fixed;
   background-size: contain;
@@ -20,48 +22,60 @@ body {
 }
 
 .logo-font {
+  /* Code from Boutique Ado */
   text-transform: uppercase;
 }
 
 .main-logo-link {
+  /* Code from Boutique Ado */
   width: fit-content;
 }
 
 .mobile-top-header-list {
+  /* Code from Boutique Ado */
   font-size: 12px;
   padding-left: 0px;
 }
 
-.shop-now-button {
-  background: #212121;
+.shop-button {
+  background: #26081c;
   color: #ffffff;
   min-width: 260px;
 }
 
 .btn-black {
+  /* Code from Boutique Ado */
   background: #212121;
   color: #ffffff;
 }
 
-.shop-now-button:hover,
-.shop-now-button:active,
-.shop-now-button:focus,
+.shop-button:hover,
+.shop-button:active,
+.shop-button:focus {
+  background: #330b26e3;
+  color: #ffffff;
+}
+
 .btn-black:hover,
 .btn-black:active,
 .btn-black:focus {
-  background: #212121;
+  /* Code from Boutique Ado */
+  background: black;
   color: #ffffff;
 }
 
 .text-black {
+  /* Code from Boutique Ado */
   color: #000 !important;
 }
 
 .border-black {
+  /* Code from Boutique Ado */
   border: 1px solid black !important;
 }
 
 .bg-black {
+  /* Code from Boutique Ado */
   background: #000 !important;
 }
 
@@ -73,6 +87,7 @@ body {
   border-radius: 8px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
+
 .tile-panel {
   list-style: none;
   margin: 0;
@@ -110,6 +125,7 @@ body {
 }
 
 .overlay {
+  /* Code from Boutique Ado */
   height: 100%;
   width: 100%;
   top: 0;
@@ -139,6 +155,7 @@ a.category-badge > span.badge:hover {
 }
 
 .btt-button {
+  /* Code from Boutique Ado */
   height: 42px;
   width: 42px;
   position: fixed;
@@ -147,11 +164,13 @@ a.category-badge > span.badge:hover {
 }
 
 .btt-button:hover {
+  /* Code from Boutique Ado */
   background: #242020da !important;
   color: #fff !important;
 }
 
 .btt-link {
+  /* Code from Boutique Ado */
   cursor: pointer;
 }
 
@@ -167,6 +186,7 @@ a.category-badge > span.badge:hover {
 /* fixed top navbar only on medium and up */
 @media (min-width: 992px) {
   .fixed-top-desktop-only {
+    /* Code from Boutique Ado */
     position: fixed;
     top: 0;
     right: 0;
@@ -186,6 +206,7 @@ a.category-badge > span.badge:hover {
   }
 
   body {
+    /* Code from Boutique Ado */
     height: calc(100vh - 116px);
   }
 }

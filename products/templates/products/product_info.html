@@ -10,6 +10,8 @@
 {% endblock %}
 
 {% block content %}
+<!-- Code used from Boutique Ado. 
+ With some changes to image to display carousel. Added SKU-->
     <div class="overlay"></div>
     <div class="container-fluid">
         <div class="row">
@@ -75,6 +77,12 @@
                         <small class="text-muted"><i class="fas fa-star mr-1"></i>{{ product.rating }} / 5</small>
                     {% else %}
                         <small class="text-muted">No Rating</small>
+                    {% endif %}
+                    
+                    {% if product.sku %}
+                    <p class="text-muted"><i class="fas fa-barcode"></i> {{ product.sku }}</small>
+                    {% else %}
+                    <small class="text-muted">No SKU</small>
                     {% endif %}
                     <p class="mt-3">{{ product.description }}</p>
                 </div>

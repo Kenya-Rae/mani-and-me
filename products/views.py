@@ -8,7 +8,8 @@ from .models import Product, Category
 # Create your views here.
 
 def all_products(request):
-    """ View to show products, including filtering and queries """
+    """ View to show products, including filtering and queries - 
+    Code used from Boutique Ado """
 
     products = Product.objects.all()
     query = None
@@ -66,7 +67,7 @@ def all_products(request):
 
 
 def product_info(request, product_id):
-    """ View to show product information """
+    """ View to show product information - Code used from Boutique Ado"""
 
     product = get_object_or_404(Product, pk=product_id)
 

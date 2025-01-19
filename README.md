@@ -188,20 +188,21 @@ When you first load on the page you are met with the homepage.
 
 ### Manual Testing
 
-| What to test        | Expected Results                         | Passed |
-| ------------------- | ---------------------------------------- | ------ |
-| Navigation Menu     | Navigate through the site correctly.     |        |
-| Search for product  | Search function for finding products.    |        |
-| View prodcucts      | View products in categories.             |        |
-| Sign Up and Login   | Sign up/Login to site as user/superuser. |        |
-| Add products        | Superusers to add products to site.      |        |
-| Delete products     | Superusers to delete products from site. |        |
-| Edit products       | Superusers to edit products on site.     |        |
-| Upload images       | Superusers to add product images.        |        |
-| Shopping bag - Add  | Users can add products to shopping bag.  |        |
-| Shopping bag - View | Users can view products in shopping bag. |        |
-| Payment             | Allow payments to be made for orders.    |        |
-| Confirmation        | Web/email confirmation of the order.     |        |
+| What to test        | Expected Results                          | Passed |
+| ------------------- | ----------------------------------------- | ------ |
+| Navigation Menu     | Navigate through the site correctly.      |        |
+| Search for product  | Search function for finding products.     |        |
+| View prodcucts      | View products in categories.              |        |
+| Sign Up and Login   | Sign up/Login to site as user/superuser.  |        |
+| Sorting products    | Sort products by price, rating, category. |        |
+| Add products        | Superusers to add products to site.       |        |
+| Delete products     | Superusers to delete products from site.  |        |
+| Edit products       | Superusers to edit products on site.      |        |
+| Upload images       | Superusers to add product images.         |        |
+| Shopping bag - Add  | Users can add products to shopping bag.   |        |
+| Shopping bag - View | Users can view products in shopping bag.  |        |
+| Payment             | Allow payments to be made for orders.     |        |
+| Confirmation        | Web/email confirmation of the order.      |        |
 
 ### For this project I have had friends and family, test amongst various devices. Such as;
 
@@ -357,7 +358,7 @@ To deploy to Heroku, follow the steps below;
 
 ### Code
 
-- []() -
+- [Boutque Ado](https://learn.codeinstitute.net/courses/course-v1:CodeInstitute+FSF_102+4/courseware/4201818c00aa4ba3a0dae243725f6e32/d3188bf68530497aa5fba55d07a9d7d7/) - Where comments are added this is where I had gotten it from. Made changes when neccessary.
 - []() -
 
 ### Acknowledgments

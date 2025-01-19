@@ -184,6 +184,16 @@ a.category-badge > span.badge:hover {
   display: flex;
   align-items: center;
 }
+
+.keep-shopping-btn {
+  background: #26081c;
+  color: #ffffff;
+}
+
+.keep-shopping-btn:hover {
+  background: #330b26e3;
+  color: #ffffff;
+}
 /* -------------------------------- Media Queries */
 
 /* Slightly larger container on xl screens */

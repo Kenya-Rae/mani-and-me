@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
+from products.models import Inventory
 
 # Create your views here.
 
@@ -13,18 +15,27 @@ def add_to_bag(request, item_id):
     size = request.POST.get('size')  # Get size
     quantity = int(request.POST.get('quantity'))
     redirect_url = request.POST.get('redirect_url')
+    size = None
+    if 'product_size' in request.POST:
+        size = request.POST['product_size']
     bag = request.session.get('bag', {})
 
      # Create a composite key for size and item_id
     item_key = f'{item_id}_{size}'
 
-    if item_id in bag:
-        if size in bag[item_id]['sizes']:
-            bag[item_id]['sizes'][size] += quantity
+    if size:
+        if item_id in list(bag.keys()):
+            if size in bag[item_id]['items_by_size'].keys():
+                bag[item_id]['items_by_size'][size] += quantity
+            else:
+                bag[item_id]['items_by_size'][size] = quantity
         else:
-            bag[item_id]['sizes'][size] = quantity
+            bag[item_id] = {'items_by_size': {size: quantity}}
     else:
-        bag[item_id] = {'sizes': {size: quantity}}
+        if item_id in list(bag.keys()):
+            bag[item_id] += quantity
+        else:
+            bag[item_id] = quantity
 
     # Reduce inventory
     inventory_item = Inventory.objects.get(product_id=item_id, size=size)

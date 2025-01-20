@@ -49,6 +49,13 @@ body {
   color: #ffffff;
 }
 
+.btn-outline-black {
+  /* Code from Boutique Ado */
+  background: white;
+  color: black !important;
+  border: 1px solid black;
+}
+
 .shop-button:hover,
 .shop-button:active,
 .shop-button:focus {

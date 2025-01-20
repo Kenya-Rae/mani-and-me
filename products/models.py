@@ -23,6 +23,7 @@ class Product(models.Model):
     sku = models.CharField(max_length=254, null=True, blank=True)
     name = models.CharField(max_length=254)
     description = models.TextField()
+    has_sizes = models.BooleanField(default=False, null=True, blank=True)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     rating = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
     image_url = models.URLField(max_length=1024, null=True, blank=True)
@@ -38,3 +39,17 @@ class ProductImage(models.Model):
 
     def __str__(self):
         return f"Image for {self.product.name}"
+
+class Inventory(models.Model):
+    """ For tracking inventory - Show customers whats available"""
+    class Meta: # Change category name in admin view
+        verbose_name_plural = 'Inventory'
+
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='inventory')
+    size = models.CharField(max_length=10, blank=True, null=True)  # Size field (optional)
+    quantity = models.PositiveIntegerField(default=0)  # Inventory count
+
+    def __str__(self):
+        if self.size:
+            return f"{self.product.name} - Size {self.size}: {self.quantity} in stock"
+        return f"{self.product.name}: {self.quantity} in stock"

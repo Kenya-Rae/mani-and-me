@@ -73,12 +73,15 @@ def all_products(request):
 
 
 def product_info(request, product_id):
-    """ View to show product information - Code used from Boutique Ado"""
+    """ View to show product information and inventory 
+    - Code used from Boutique Ado (Adapted)"""
 
     product = get_object_or_404(Product, pk=product_id)
+    inventory = product.inventory.all()
 
     context = {
         'product': product,
+        'inventory': inventory,
     }
 
     return render (request, 'products/product_info.html', context)

@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, reverse, HttpResponse
+from django.shortcuts import render, redirect, reverse, HttpResponse, get_object_or_404
 from django.contrib import messages
 
 from products.models import Inventory, Product
@@ -15,7 +15,7 @@ def add_to_bag(request, item_id):
     """ Add a quantity of an item to the shopping bag 
         - Code from Boutique Ado with adaptations """
 
-    product = Product.objects.get(pk=item_id)
+    product = get_object_or_404(Product,pk=item_id)
     size = request.POST.get('size')  # Get size
     quantity = int(request.POST.get('quantity'))
     redirect_url = request.POST.get('redirect_url')
@@ -31,13 +31,17 @@ def add_to_bag(request, item_id):
         if item_id in list(bag.keys()):
             if size in bag[item_id]['items_by_size'].keys():
                 bag[item_id]['items_by_size'][size] += quantity
+                messages.success(request, f'Updated size {size.upper()} {product.name} quantity to {bag[item_id]["items_by_size"][size]}')
             else:
                 bag[item_id]['items_by_size'][size] = quantity
+                messages.success(request, f'Added size {size.upper()} {product.name} to your shopping bag!')
         else:
             bag[item_id] = {'items_by_size': {size: quantity}}
+            messages.success(request, f'Added size {size.upper()} {product.name} to your shopping bag!')
     else:
         if item_id in list(bag.keys()):
             bag[item_id] += quantity
+            messages.success(request, f'Updated {product.name} quantity to {bag[item_id]}!')
         else:
             bag[item_id] = quantity
             messages.success(request, f'Added {product.name} to your shopping bag!')
@@ -59,6 +63,7 @@ def adjust_shopping_bag(request, item_id):
     """ Adjust item quantity in the shopping bag 
         - Code from Boutique Ado with adaptations """
     
+    product = get_object_or_404(Product,pk=item_id)
     quantity = int(request.POST.get('quantity'))
     size = None
     if 'product_size' in request.POST:
@@ -89,6 +94,7 @@ def adjust_shopping_bag(request, item_id):
             
             # Update the bag quantity
             bag[item_id]['items_by_size'][size] = quantity
+            messages.success(request, f'Updated size {size.upper()} {product.name} quantity to {bag[item_id]["items_by_size"][size]}')
         else:
             # Remove item and return stock to inventory
             inventory_item = Inventory.objects.get(product_id=item_id, size=size)
@@ -98,6 +104,7 @@ def adjust_shopping_bag(request, item_id):
             del bag[item_id]['items_by_size'][size]
             if not bag[item_id]['items_by_size']:
                 bag.pop(item_id)
+            messages.success(request, f'Removed size {size.upper()} {product.name} from your shopping bag!')
     else:
         if quantity > 0:
             # Update inventory if increasing quantity
@@ -107,7 +114,7 @@ def adjust_shopping_bag(request, item_id):
                     inventory_item.quantity -= (quantity - current_quantity)  # Deduct the difference
                     inventory_item.save()
                 else:
-                    messages.error(request, "Not enough stock available.")
+                    messages.error(request, f'Not enough stock available.')
                     return redirect(reverse('view_shopping_bag'))
             elif quantity < current_quantity:
                 inventory_item.quantity += (current_quantity - quantity)  # Restore the difference
@@ -115,6 +122,7 @@ def adjust_shopping_bag(request, item_id):
             
             # Update the bag quantity
             bag[item_id] = quantity
+            messages.success(request, f'Update {product.name} quantity to your {bag[item_id]}!')
         else:
             # Remove item and return stock to inventory
             inventory_item = Inventory.objects.get(product_id=item_id)
@@ -122,6 +130,7 @@ def adjust_shopping_bag(request, item_id):
             inventory_item.save()
             
             bag.pop(item_id)
+            messages.success(request, f'Removed {product.name} from your shopping bag!')
 
     request.session['bag'] = bag
     return redirect(reverse('view_shopping_bag'))
@@ -131,6 +140,7 @@ def remove_from_shopping_bag(request, item_id):
     """ Remove item quantity from the shopping bag and update inventory """
 
     try:
+        product = get_object_or_404(Product,pk=item_id)
         size = None
         if 'product_size' in request.POST:
             size = request.POST['product_size']
@@ -147,6 +157,7 @@ def remove_from_shopping_bag(request, item_id):
             del bag[item_id]['items_by_size'][size]
             if not bag[item_id]['items_by_size']:
                 bag.pop(item_id)
+            messages.success(request, f'Removed size {size.upper()} {product.name} from your shopping bag!')
         else:
             current_quantity = bag.get(item_id, 0)
             if current_quantity > 0:
@@ -156,9 +167,11 @@ def remove_from_shopping_bag(request, item_id):
                 inventory_item.save()
 
             bag.pop(item_id)
+            messages.success(request, f'Removed {product.name} from your shopping bag!')
 
         request.session['bag'] = bag
         return HttpResponse(status=200)
 
     except Exception as e:
+        messages.error(request, f'Error removing item: {e}' )
         return HttpResponse(status=500)

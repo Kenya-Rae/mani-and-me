@@ -177,7 +177,9 @@ a.category-badge > span.badge:hover {
   color: #fff !important;
 }
 
-.btt-link {
+.btt-link,
+.update-link,
+.remove-item {
   /* Code from Boutique Ado */
   cursor: pointer;
 }
@@ -201,6 +203,10 @@ a.category-badge > span.badge:hover {
 .keep-shopping-btn:hover {
   background: #330b26e3;
   color: #ffffff;
+}
+
+.id_qty_4 {
+  height: auto;
 }
 /* -------------------------------- Media Queries */
 

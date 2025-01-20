@@ -208,6 +208,24 @@ a.category-badge > span.badge:hover {
 .form-control.qty_input {
   height: auto;
 }
+
+.message-container {
+  /* Code from Boutique Ado */
+  position: fixed;
+  top: 72px;
+  right: 15px;
+  z-index: 9999999999;
+}
+
+.custom-toast {
+  /* Code from Boutique Ado */
+  overflow: visible;
+}
+
+.toast-capper {
+  /* Code from Boutique Ado */
+  height: 2px;
+}
 /* -------------------------------- Media Queries */
 
 /* Slightly larger container on xl screens */

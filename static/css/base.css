@@ -205,7 +205,7 @@ a.category-badge > span.badge:hover {
   color: #ffffff;
 }
 
-.id_qty_4 {
+.form-control.qty_input {
   height: auto;
 }
 /* -------------------------------- Media Queries */

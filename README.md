@@ -203,6 +203,7 @@ When you first load on the page you are met with the homepage.
 | Shopping bag - View | Users can view products in shopping bag.  |        |
 | Payment             | Allow payments to be made for orders.     |        |
 | Confirmation        | Web/email confirmation of the order.      |        |
+| Inventory           | To be able to add stock control.          |        |
 
 ### For this project I have had friends and family, test amongst various devices. Such as;
 
@@ -270,7 +271,7 @@ W3c was used to validate HTML, CSS. JShint was used for JavaScript code.
 
 ### Fixed Bugs
 
--
+- Sorting and filtering via ascending descending was not consitently working for some categories. In order to fix this, I had to change the if statement to include elif to handle the logic correctly.
 
 ## Deployments
 
@@ -358,7 +359,7 @@ To deploy to Heroku, follow the steps below;
 
 ### Code
 
-- [Boutque Ado](https://learn.codeinstitute.net/courses/course-v1:CodeInstitute+FSF_102+4/courseware/4201818c00aa4ba3a0dae243725f6e32/d3188bf68530497aa5fba55d07a9d7d7/) - Where comments are added this is where I had gotten it from. Made changes when neccessary.
+- [Boutque Ado](https://learn.codeinstitute.net/courses/course-v1:CodeInstitute+FSF_102+4/courseware/4201818c00aa4ba3a0dae243725f6e32/d3188bf68530497aa5fba55d07a9d7d7/) - Where comments are added this is where I had gotten it from. Made changes to most sections that were used from this walkthrough.
 - []() -
 
 ### Acknowledgments

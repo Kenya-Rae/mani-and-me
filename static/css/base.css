@@ -4,7 +4,8 @@ html {
 }
 
 body {
-  /* Code from Boutique Ado */
+  /* Code from Boutique Ado - 
+  Changed background to fixed and size to contain to suit my image*/
   background: url("/media/mani_and_me_background.jpg") no-repeat center center
     fixed;
   background-size: contain;
@@ -17,8 +18,8 @@ body {
   align-items: center;
   display: inline-flex;
   justify-content: center;
-  height: 24px;
-  width: 24px;
+  height: 30px;
+  width: 30px;
 }
 
 .logo-font {

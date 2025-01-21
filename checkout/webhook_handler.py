@@ -14,5 +14,23 @@ class StripeWH_Handler:
         - Code from Boutique Ado
         """
         return HttpResponse(
+            content=f'Unhandled Webhook received: {event["type"]}',
+            status=200)
+    
+    def handle_payment_intent_succeeded(self, event):
+        """
+        Handle the payment_intent.success webhook from Stripe
+        - Code from Boutique Ado
+        """
+        return HttpResponse(
+            content=f'Webhook received: {event["type"]}',
+            status=200)
+
+    def handle_payment_intent_payment_failed(self, event):
+        """
+        Handle the payment_intent.success webhook from Stripe
+        - Code from Boutique Ado
+        """
+        return HttpResponse(
             content=f'Webhook received: {event["type"]}',
             status=200)

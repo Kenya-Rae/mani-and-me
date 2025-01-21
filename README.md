@@ -272,6 +272,7 @@ W3c was used to validate HTML, CSS. JShint was used for JavaScript code.
 ### Fixed Bugs
 
 - Sorting and filtering via ascending descending was not consitently working for some categories. In order to fix this, I had to change the if statement to include elif to handle the logic correctly.
+- Payment input box was not display due to file path and typo within views.
 
 ## Deployments
 

@@ -1,5 +1,6 @@
 .StripeElement,
 .stripe-style-input {
+  /* Code from Boutique Ado */
   box-sizing: border-box;
   height: 40px;
   padding: 10px 12px;
@@ -14,24 +15,50 @@
 .StripeElement--focus,
 .stripe-style-input:focus,
 .stripe-style-input:active {
+  /* Code from Boutique Ado */
   box-shadow: 0 1px 3px 0 #cfd7df;
 }
 
 .StripeElement--webkit-autofill {
+  /* Code from Boutique Ado */
   background-color: #fefde5 !important;
 }
 
 .stripe-style-input::placeholder {
+  /* Code from Boutique Ado */
   color: #aab7c4;
 }
 
 .fieldset-label {
+  /* Code from Boutique Ado */
   position: relative;
   right: 0.5rem;
 }
 
 #payment-form .form-control,
 #card-element {
+  /* Code from Boutique Ado */
   color: #000;
   border: 1px solid #000;
+}
+
+#loading-overlay {
+  /* Code from Boutique Ado */
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #994d74;
+  z-index: 9999;
+}
+
+.loading-spinner {
+  /* Code from Boutique Ado */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  height: 100%;
 }

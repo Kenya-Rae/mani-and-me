@@ -273,6 +273,7 @@ W3c was used to validate HTML, CSS. JShint was used for JavaScript code.
 
 - Sorting and filtering via ascending descending was not consitently working for some categories. In order to fix this, I had to change the if statement to include elif to handle the logic correctly.
 - Payment input box was not display due to file path and typo within views.
+- Recieved "Bad Request: /checkout/cache_checkout_data/" after debugging my stripe_elements.js, checkout views.py and checkout.html. I found that JSON was not imported within checkout views.py file. After adding this payments and webhooks where successful again.
 
 ## Deployments
 

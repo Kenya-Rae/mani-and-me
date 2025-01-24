@@ -85,3 +85,54 @@ def product_info(request, product_id):
     }
 
     return render (request, 'products/product_info.html', context)
+
+def add_product(request):
+    """ Add a product to the store with inventory details. """
+    if request.method == 'POST':
+        product_form = ProductForm(request.POST, request.FILES)
+        inventory_form = InventoryForm(request.POST)
+
+        if product_form.is_valid() and inventory_form.is_valid():
+            product = product_form.save()
+
+            # Create inventory for the product based on form data
+            inventory = inventory_form.save(commit=False)
+            inventory.product = product
+            inventory.save()
+
+            messages.success(request, 'Successfully added product and inventory!')
+            return redirect('add_product')
+
+        else:
+            messages.error(request, 'Failed to add product or inventory. Please ensure the form is valid.')
+
+    else:
+        product_form = ProductForm()
+        inventory_form = InventoryForm()
+
+    context = {
+        'product_form': product_form,
+        'inventory_form': inventory_form,
+    }
+
+    return render(request, 'products/add_product.html', context)
+
+def manage_inventory(request):
+    try:
+        get_template('products/manage_inventory.html')  # Try loading the template directly
+    except Exception as e:
+        return HttpResponseNotFound(f"Template not found: {e}")
+
+    # Your existing logic
+    products = Product.objects.all()
+    product_inventory = {}
+
+    for product in products:
+        inventory = Inventory.objects.filter(product=product)
+        product_inventory[product] = inventory
+
+    return render(
+        request,
+        'products/manage_inventory.html',  # This should now load the template from the correct location
+        {'product_inventory': product_inventory}
+    )

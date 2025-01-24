@@ -275,6 +275,7 @@ W3c was used to validate HTML, CSS. JShint was used for JavaScript code.
 - Payment input box was not display due to file path and typo within views.
 - Recieved "Bad Request: /checkout/cache_checkout_data/" after debugging my stripe_elements.js, checkout views.py and checkout.html. I found that JSON was not imported within checkout views.py file. After adding this payments and webhooks where successful again.
 - Order history was unable to be view when clicked due to no import of the order model.
+- Product management form displayed a 'BoundWidget' object has no attribute 'field' error. As I was trying to access the fields directly in the template in an invalid manner. I have removed the field from the form and tried {{ product_form|crispy }} instead.
 
 ## Deployments
 

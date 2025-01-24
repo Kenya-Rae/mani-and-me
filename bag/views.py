@@ -15,30 +15,52 @@ def add_to_bag(request, item_id):
     """ Add a quantity of an item to the shopping bag 
         - Code from Boutique Ado with adaptations """
 
-    product = get_object_or_404(Product,pk=item_id)
+    product = get_object_or_404(Product, pk=item_id)
     size = request.POST.get('size')  # Get size
     quantity = int(request.POST.get('quantity'))
     redirect_url = request.POST.get('redirect_url')
-    size = None
+    
+    # Ensure size is selected and not None
     if 'product_size' in request.POST:
         size = request.POST['product_size']
+    
+    # Prevent 'NoneType' error when calling .upper()
+    size_display = size.upper() if size else "No size selected"
+    
     bag = request.session.get('bag', {})
 
-     # Create a composite key for size and item_id
+    # Create a composite key for size and item_id
     item_key = f'{item_id}_{size}'
 
+    # Logic when size is selected
     if size:
         if item_id in list(bag.keys()):
             if size in bag[item_id]['items_by_size'].keys():
                 bag[item_id]['items_by_size'][size] += quantity
-                messages.success(request, f'Updated size {size.upper()} {product.name} quantity to {bag[item_id]["items_by_size"][size]}')
+                messages.success(request, f'Updated size {size_display} {product.name} quantity to {bag[item_id]["items_by_size"][size]}')
             else:
                 bag[item_id]['items_by_size'][size] = quantity
-                messages.success(request, f'Added size {size.upper()} {product.name} to your shopping bag!')
+                messages.success(request, f'Added size {size_display} {product.name} to your shopping bag!')
         else:
             bag[item_id] = {'items_by_size': {size: quantity}}
-            messages.success(request, f'Added size {size.upper()} {product.name} to your shopping bag!')
+            messages.success(request, f'Added size {size_display} {product.name} to your shopping bag!')
+
+        # Reduce inventory only if size is selected
+        try:
+            inventory_item = Inventory.objects.get(product_id=item_id, size=size)
+            if inventory_item.quantity >= quantity:
+                inventory_item.quantity -= quantity
+                inventory_item.save()
+            else:
+                messages.error(request, "Not enough stock available.")
+                return redirect(redirect_url)
+
+        except Inventory.DoesNotExist:
+            messages.error(request, f'No inventory found for size {size_display} of {product.name}.')
+            return redirect(redirect_url)
+
     else:
+        # Logic for products with no size selected
         if item_id in list(bag.keys()):
             bag[item_id] += quantity
             messages.success(request, f'Updated {product.name} quantity to {bag[item_id]}!')
@@ -46,15 +68,21 @@ def add_to_bag(request, item_id):
             bag[item_id] = quantity
             messages.success(request, f'Added {product.name} to your shopping bag!')
 
-    # Reduce inventory
-    inventory_item = Inventory.objects.get(product_id=item_id, size=size)
-    if inventory_item.quantity >= quantity:
-        inventory_item.quantity -= quantity
-        inventory_item.save()
-    else:
-        messages.error(request, "Not enough stock available.")
-        return redirect(redirect_url)
+        # Reduce inventory for non-sized products
+        try:
+            inventory_item = Inventory.objects.get(product_id=item_id)  # No size specified
+            if inventory_item.quantity >= quantity:
+                inventory_item.quantity -= quantity
+                inventory_item.save()
+            else:
+                messages.error(request, "Not enough stock available.")
+                return redirect(redirect_url)
 
+        except Inventory.DoesNotExist:
+            messages.error(request, f'No inventory found for {product.name}.')
+            return redirect(redirect_url)
+
+    # Save the updated bag in the session
     request.session['bag'] = bag
     return redirect(redirect_url)
 

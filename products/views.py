@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.db.models.functions import Lower
-from django.http import HttpResponseRedirect
-from django.forms import modelformset_factory
 
+from django.http import HttpResponseRedirect
 from django.http import JsonResponse
+
+from django.forms import modelformset_factory
 from .models import Product, Category, Inventory
 from .forms import ProductForm, InventoryForm, InventoryFormSet
 
@@ -91,8 +93,13 @@ def product_info(request, product_id):
     return render (request, 'products/product_info.html', context)
 
 
+@login_required
 def add_product(request):
     """ Add a product to the store. """
+    if not request.user.is_superuser:
+        messages.error(request, 'Sorry, only store owners can do that.')
+        return redirect(reverse('home'))
+
     if request.method == 'POST':
         product_form = ProductForm(request.POST, request.FILES)
 
@@ -113,8 +120,13 @@ def add_product(request):
     return render(request, 'products/add_product.html', context)
 
 
+@login_required
 def edit_product(request, product_id):
     """ Edit a product in the store """
+    if not request.user.is_superuser:
+        messages.error(request, 'Sorry, only store owners can do that.')
+        return redirect(reverse('home'))
+
     product = get_object_or_404(Product, pk=product_id)
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES, instance=product)
@@ -137,16 +149,26 @@ def edit_product(request, product_id):
     return render(request, template, context)
 
 
+@login_required
 def delete_product(request, product_id):
     """ Delete a product from the store """
+    if not request.user.is_superuser:
+        messages.error(request, 'Sorry, only store owners can do that.')
+        return redirect(reverse('home'))
+
     product = get_object_or_404(Product, pk=product_id)
     product.delete()
     messages.success(request, 'Product deleted!')
     return redirect(reverse('products'))
 
 
+@login_required
 def manage_inventory(request):
     """ View to display all products with inventory details. """
+    if not request.user.is_superuser:
+        messages.error(request, 'Sorry, only store owners can do that.')
+        return redirect(reverse('home'))
+        
     products = Product.objects.all()  # Get all products
 
     context = {

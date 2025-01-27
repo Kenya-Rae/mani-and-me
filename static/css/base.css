@@ -296,26 +296,30 @@ input[name="q"]::placeholder {
 /* Allauth form formatting */
 
 .allauth-form-inner-content p {
+  /* Code from Boutique Ado */
   margin-top: 1.5rem; /* mt-4 */
   color: #6c757d; /* text-secondary */
 }
 
 .allauth-form-inner-content input {
+  /* Code from Boutique Ado */
   border-color: #000;
   border-radius: 0;
 }
 
 .allauth-form-inner-content label:not([for="id_remember"]) {
+  /* Code from Boutique Ado */
   display: none;
 }
 
 .allauth-form-inner-content input::placeholder {
+  /* Code from Boutique Ado */
   color: #aab7c4;
 }
 
 .allauth-form-inner-content button,
 .allauth-form-inner-content input[type="submit"] {
-  /* btn */
+  /* btn - Code from Boutique Ado */
   display: inline-block;
   font-weight: 400;
   color: #fff;
@@ -339,13 +343,47 @@ input[name="q"]::placeholder {
 
 .allauth-form-inner-content button:hover,
 .allauth-form-inner-content input[type="submit"]:hover {
+  /* Code from Boutique Ado */
   color: #fff;
   background-color: #330b26e3;
   border-color: #330b26e3;
 }
 
 .allauth-form-inner-content a {
+  /* Code from Boutique Ado */
   color: #17a2b8; /* text-info */
+}
+
+/* Product Form */
+
+.btn-file {
+  /* Code from Boutique Ado */
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-file input[type="file"] {
+  /* Code from Boutique Ado */
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 100%;
+  min-height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.custom-checkbox .custom-control-label::before {
+  /* Code from Boutique Ado */
+  border-radius: 0;
+  border-color: #dc3545;
+}
+
+.custom-checkbox .custom-control-input:checked ~ .custom-control-label::before {
+  /* Code from Boutique Ado */
+  background-color: #dc3545;
+  border-color: #dc3545;
+  border-radius: 0;
 }
 
 /* fixed top navbar only on medium and up */

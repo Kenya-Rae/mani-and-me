@@ -104,9 +104,9 @@ def add_product(request):
         product_form = ProductForm(request.POST, request.FILES)
 
         if product_form.is_valid():
-            product_form.save()
+            product = product_form.save()  # Save and assign the Product instance
             messages.success(request, 'Successfully added the product!')
-            return redirect(reverse('products'))
+            return redirect(reverse('product_info', args=[product.id]))  # Use the saved product's ID
         else:
             messages.error(request, 'Failed to add product. Please ensure the form is valid.')
 

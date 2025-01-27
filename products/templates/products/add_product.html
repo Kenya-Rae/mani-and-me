@@ -21,14 +21,17 @@
     </div>
     <div class="row">
         <div class="col-12 col-md-6">
-            <form method="POST" enctype="multipart/form-data">
+            <form method="POST" enctype="multipart/form-data"  action="{% url 'add_product' %}">
                 {% csrf_token %}
                 <div class="form-group">
                     <h3>Product Details</h3>
                     {{ product_form|crispy }}
                 </div>
 
-                <button type="submit" class="btn btn-primary">Add Product</button>
+                <div class="text-right">
+                    <a class="btn btn-outline-black rounded-2" href="{% url 'products' %}">Cancel</a>
+                    <button class="btn btn-black rounded-2" type="submit">Add Product</button>
+                </div>
             </form>
         </div>
     </div>

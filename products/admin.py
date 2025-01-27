@@ -9,12 +9,11 @@ class ProductImageInline(admin.TabularInline):
 class InventoryInline(admin.TabularInline):
     """ Inline for managing product inventory """
     model = Inventory
-    extra = 1  
+    extra = 1  # Allow adding inventory entries directly
     fields = ('size', 'quantity') 
-    readonly_fields = ('size',)  
+    readonly_fields = ('size',)  # Keep 'size' non-editable 
 
 class ProductAdmin(admin.ModelAdmin):
-    # Code used from Boutique Ado with slight modification
     list_display = (
         'category',
         'sku',
@@ -22,12 +21,12 @@ class ProductAdmin(admin.ModelAdmin):
         'price',
         'image',    
         'rating',
-        'has_sizes',  # Display whether the product has sizes
+        'has_sizes',
     )
-    inlines = [ProductImageInline, InventoryInline]  # Add inlines for images and inventory
+    inlines = [ProductImageInline, InventoryInline]
     ordering = ('sku',)
-    list_filter = ('category', 'has_sizes')  # Add filter to find products with/without sizes
-    search_fields = ('name', 'sku', 'description')  # Enable search by these fields
+    list_filter = ('category', 'has_sizes')
+    search_fields = ('name', 'sku', 'description')
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = (

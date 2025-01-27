@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load static crispy_forms_tags %}
 
 {% block page_header %}
     <div class="container header-container">
@@ -28,24 +27,7 @@
                     <h3>Product Details</h3>
                     {{ product_form|crispy }}
                 </div>
-                
-                <div class="form-group">
-                    <h3>Inventory Details</h3>
-                    {{ inventory_form|crispy }}
-                </div>
-                
-                <div class="form-group">
-                    <h3>Product Images</h3>
-                    {{ image_formset.management_form }}
-                    {% for form in image_formset %}
-                        <div class="mb-2">
-                            {{ form.image.label_tag }}
-                            {{ form.image }}
-                        </div>
-                    {% endfor %}
-                    <small class="form-text text-muted">You can select up to 10 images.</small>
-                </div>
-                
+
                 <button type="submit" class="btn btn-primary">Add Product</button>
             </form>
         </div>

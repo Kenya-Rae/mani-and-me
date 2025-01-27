@@ -1,5 +1,7 @@
 from django import forms
 from django.forms.models import inlineformset_factory
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit
 from .models import Product, ProductImage, Inventory, Category
 
 
@@ -13,8 +15,6 @@ class ProductForm(forms.ModelForm):
         categories = Category.objects.all()
         friendly_names = [(c.id, c.get_friendly_name()) for c in categories]
         self.fields['category'].choices = friendly_names
-        for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'border-black rounded-0'
 
 
 class ProductImageForm(forms.ModelForm):
@@ -27,15 +27,18 @@ class ProductImageForm(forms.ModelForm):
         self.fields['image'].widget.attrs['class'] = 'border-black rounded-0'
 
 
-class InventoryForm(forms.ModelForm):
-    class Meta:
-        model = Inventory
-        fields = '__all__'
+class InventoryForm(forms.Form):
+    size = forms.CharField(required=False)  # For size if has_sizes is True
+    quantity = forms.IntegerField(min_value=0, required=True)
 
+    # Add crispy form helper
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['size'].widget.attrs['class'] = 'border-black rounded-0'
-        self.fields['quantity'].widget.attrs['class'] = 'border-black rounded-0'
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'  # optional: Bootstrap class
+        self.helper.label_class = 'col-md-4'  # optional
+        self.helper.field_class = 'col-md-8'  # optional
+        self.helper.add_input(Submit('submit', 'Submit', css_class='btn btn-primary'))
 
 
 # Inline formsets
@@ -44,5 +47,5 @@ ProductImageFormSet = inlineformset_factory(
 )
 
 InventoryFormSet = inlineformset_factory(
-    Product, Inventory, form=InventoryForm, extra=1, can_delete=True
+    Product, Inventory, form=InventoryForm, fields=('size', 'quantity'), extra=1, can_delete=True
 )

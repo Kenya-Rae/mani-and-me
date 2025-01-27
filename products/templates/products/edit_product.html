@@ -10,44 +10,53 @@
 {% endblock %}
 
 {% block content %}
-    <div class="overlay"></div>
-    <div class="container">
-        <div class="row">
-            <div class="col-12 col-md-6">
-                <hr>
-                <h2 class="logo-font mb-4">Product Management</h2>
-                <h5 class="text-muted">Edit a Product</h5>
-                <hr>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-12 col-md-6">
-                <form method="POST" action="{% url 'edit_product' product.id %}" class="form mb-2" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {% for field in form %}
-                        {% if field.name != 'image' %}
-                            {{ field | as_crispy_field }}
-                        {% else %}
-                            {{ field }}
-                        {% endif %}
-                    {% endfor %}
-                    <div class="text-right">
-                        <a class="btn btn-outline-black rounded-2" href="{% url 'products' %}">Cancel</a>
-                        <button class="btn btn-black rounded-2" type="submit">Update Product</button>
-                    </div>
-                </form>
-            </div>            
+<div class="overlay"></div>
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <hr>
+            <h2 class="logo-font mb-4">Product Management</h2>
+            <h5 class="text-muted">Edit a Product</h5>
+            <hr>
         </div>
     </div>
-{% endblock %}
 
-{% block postloadjs %}
-    {{ block.super }}
-    <script type="text/javascript">
-        $('#new-image').change(function() {
-            var file = $('#new-image')[0].files[0];
-            $('#filename').text(`Image will be set to: ${file.name}`);
-        });
-    </script>
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <form method="POST" action="{% url 'edit_product' product.id %}" class="form mb-2" enctype="multipart/form-data">
+                {% csrf_token %}
+                <h3>Product Details</h3>
+                <div class="form-group">
+                    {{ form|crispy }}
+                </div>
+
+                <h3>Product Images</h3>
+                <div class="form-group">
+                    {{ formset.management_form }}
+                    {% for form in formset %}
+                        <div class="form-row mb-2">
+                            <div>
+                                {{ form.image.label_tag }}
+                                {{ form.image }}
+                            </div>
+                            {% if form.instance.pk %}
+                                <div class="mt-2">
+                                    <img src="{{ form.instance.image.url }}" alt="{{ form.instance.image.name }}" width="100">
+                                    <p>{{ form.image.name }}</p>
+                                    {{ form.DELETE.label_tag }}
+                                    {{ form.DELETE }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="text-right">
+                    <a class="btn btn-outline-black rounded-2" href="{% url 'products' %}">Cancel</a>
+                    <button class="btn btn-black rounded-2" type="submit">Update Product</button>
+                </div>
+            </form>
+        </div>            
+    </div>
+</div>
 {% endblock %}

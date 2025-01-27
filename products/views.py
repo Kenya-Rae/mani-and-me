@@ -7,9 +7,10 @@ from django.db.models.functions import Lower
 from django.http import HttpResponseRedirect
 from django.http import JsonResponse
 
+from django.forms.models import inlineformset_factory
 from django.forms import modelformset_factory
 from .models import Product, Category, Inventory
-from .forms import ProductForm, InventoryForm, InventoryFormSet
+from .forms import ProductForm, InventoryForm, InventoryFormSet, ProductImageFormSet, ProductImage, ProductImageForm
 
 # Create your views here.
 
@@ -95,26 +96,29 @@ def product_info(request, product_id):
 
 @login_required
 def add_product(request):
-    """ Add a product to the store. """
     if not request.user.is_superuser:
         messages.error(request, 'Sorry, only store owners can do that.')
         return redirect(reverse('home'))
 
     if request.method == 'POST':
         product_form = ProductForm(request.POST, request.FILES)
+        formset = ProductImageFormSet(request.POST, request.FILES)
 
-        if product_form.is_valid():
-            product = product_form.save()  # Save and assign the Product instance
-            messages.success(request, 'Successfully added the product!')
-            return redirect(reverse('product_info', args=[product.id]))  # Use the saved product's ID
+        if product_form.is_valid() and formset.is_valid():
+            product = product_form.save()
+            formset.instance = product
+            formset.save()
+            messages.success(request, 'Successfully added the product with images!')
+            return redirect(reverse('product_info', args=[product.id]))
         else:
-            messages.error(request, 'Failed to add product. Please ensure the form is valid.')
-
+            messages.error(request, 'Failed to add product. Please ensure the form and images are valid.')
     else:
         product_form = ProductForm()
+        formset = ProductImageFormSet()
 
     context = {
         'product_form': product_form,
+        'formset': formset,
     }
 
     return render(request, 'products/add_product.html', context)
@@ -122,27 +126,39 @@ def add_product(request):
 
 @login_required
 def edit_product(request, product_id):
-    """ Edit a product in the store """
+    """Edit a product in the store."""
     if not request.user.is_superuser:
         messages.error(request, 'Sorry, only store owners can do that.')
         return redirect(reverse('home'))
 
     product = get_object_or_404(Product, pk=product_id)
+    ProductImageFormSet = inlineformset_factory(
+        Product, ProductImage, 
+        form=ProductImageForm, 
+        extra=max(3 - product.images.count(), 1),  # Add at least 1 empty form
+        can_delete=True
+    )
+
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES, instance=product)
-        if form.is_valid():
+        formset = ProductImageFormSet(request.POST, request.FILES, instance=product)
+
+        if form.is_valid() and formset.is_valid():
             form.save()
+            formset.save()
             messages.success(request, 'Successfully updated product!')
             return redirect(reverse('product_info', args=[product.id]))
         else:
             messages.error(request, 'Failed to update product. Please ensure the form is valid.')
     else:
         form = ProductForm(instance=product)
+        formset = ProductImageFormSet(instance=product)
         messages.info(request, f'You are editing {product.name}')
 
     template = 'products/edit_product.html'
     context = {
         'form': form,
+        'formset': formset,
         'product': product,
     }
 

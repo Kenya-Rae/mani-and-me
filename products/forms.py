@@ -2,6 +2,7 @@ from django import forms
 from django.forms.models import inlineformset_factory
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
+from .widgets import CustomClearableFileInput
 from .models import Product, ProductImage, Inventory, Category
 
 
@@ -10,6 +11,8 @@ class ProductForm(forms.ModelForm):
         model = Product
         fields = '__all__'
 
+    image = forms.ImageField(label='Image', required=False, widget=CustomClearableFileInput)
+    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         categories = Category.objects.all()

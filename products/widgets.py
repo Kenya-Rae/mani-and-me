@@ -1,11 +1,8 @@
 from django.forms.widgets import ClearableFileInput
+from django.utils.translation import gettext_lazy as _
 
 class CustomClearableFileInput(ClearableFileInput):
-    """Custom widget to allow multiple file uploads."""
-    allow_multiple_selected = True
-
-    def __init__(self, attrs=None):
-        if attrs is None:
-            attrs = {}
-        attrs['multiple'] = True
-        super().__init__(attrs)
+    clear_checkbox_label = _('Remove')
+    initial_text = _('Current Image')
+    input_text = _('')
+    template_name = 'products/custom_widget_templates/custom_clearable_file_input.html'

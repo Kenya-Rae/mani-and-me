@@ -143,6 +143,12 @@ body {
   z-index: -1;
 }
 
+.about-us-text,
+.contact-us-text {
+  font-size: larger;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
 .product-image {
   width: 100%;
   height: 340px;

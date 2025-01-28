@@ -132,6 +132,42 @@ body {
   font-weight: bold;
 }
 
+/* Styling for the rotating bar */
+.product-scroll-bar {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.product-bar {
+  display: inline-block;
+  animation: scroll-left 25s linear infinite; /* Adjust speed here */
+  background-color: #330b26e3;
+}
+
+.product-item {
+  display: inline-block;
+  margin-right: 50px; /* Space between items */
+  font-size: 1.2rem;
+  white-space: nowrap;
+  padding: 10px;
+}
+
+/* Animation for scrolling */
+@keyframes scroll-left {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.product-name {
+  font-weight: bold;
+  color: white;
+}
+
 .overlay {
   /* Code from Boutique Ado */
   height: 100%;

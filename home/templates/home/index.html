@@ -11,7 +11,18 @@
 
 {% block content %}
 <div class="container h-100 home-content">
-    <!-- Code used from Boutique Ado. With some addaption -->
+    <div class="container mt-3">
+        <div class="product-scroll-bar">
+            <div class="product-bar">
+                {% for product in products %}
+                <div class="product-item">
+                    <span class="product-name">{{ product.name }}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <!-- Code used from Boutique Ado. With some adaption -->
     <div class="row h-100">
         <div class="col-7 col-md-6 my-auto">
             <h1 class="display-4 logo-font text-black">
@@ -53,4 +64,9 @@
         </div>
     </div>
 </div>
+
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/base.css' %}">
 {% endblock %}

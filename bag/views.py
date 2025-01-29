@@ -5,32 +5,30 @@ from products.models import Inventory, Product
 
 # Create your views here.
 
+
 def view_shopping_bag(request):
     """ View to return the shopping bag """
 
-    return render (request, 'bag/shopping_bag.html')
+    return render(request, 'bag/shopping_bag.html')
 
 
 def add_to_bag(request, item_id):
-    """ Add a quantity of an item to the shopping bag 
+    """ Add a quantity of an item to the shopping bag
         - Code from Boutique Ado with adaptations """
 
     product = get_object_or_404(Product, pk=item_id)
     size = request.POST.get('size')  # Get size
     quantity = int(request.POST.get('quantity'))
     redirect_url = request.POST.get('redirect_url')
-    
+
     # Ensure size is selected and not None
     if 'product_size' in request.POST:
         size = request.POST['product_size']
-    
+
     # Prevent 'NoneType' error when calling .upper()
     size_display = size.upper() if size else "No size selected"
-    
-    bag = request.session.get('bag', {})
 
-    # Create a composite key for size and item_id
-    item_key = f'{item_id}_{size}'
+    bag = request.session.get('bag', {})
 
     # Logic when size is selected
     if size:
@@ -47,7 +45,8 @@ def add_to_bag(request, item_id):
 
         # Reduce inventory only if size is selected
         try:
-            inventory_item = Inventory.objects.get(product_id=item_id, size=size)
+            inventory_item = Inventory.objects.get(
+                product_id=item_id, size=size)
             if inventory_item.quantity >= quantity:
                 inventory_item.quantity -= quantity
                 inventory_item.save()
@@ -88,9 +87,9 @@ def add_to_bag(request, item_id):
 
 
 def adjust_shopping_bag(request, item_id):
-    """ Adjust item quantity in the shopping bag 
+    """ Adjust item quantity in the shopping bag
         - Code from Boutique Ado with adaptations """
-    
+
     product = get_object_or_404(Product,pk=item_id)
     quantity = int(request.POST.get('quantity'))
     size = None
@@ -119,7 +118,7 @@ def adjust_shopping_bag(request, item_id):
             elif quantity < current_quantity:
                 inventory_item.quantity += (current_quantity - quantity)  # Restore the difference
                 inventory_item.save()
-            
+
             # Update the bag quantity
             bag[item_id]['items_by_size'][size] = quantity
             messages.success(request, f'Updated size {size.upper()} {product.name} quantity to {bag[item_id]["items_by_size"][size]}')
@@ -128,7 +127,7 @@ def adjust_shopping_bag(request, item_id):
             inventory_item = Inventory.objects.get(product_id=item_id, size=size)
             inventory_item.quantity += current_quantity  # Return the entire quantity to inventory
             inventory_item.save()
-            
+
             del bag[item_id]['items_by_size'][size]
             if not bag[item_id]['items_by_size']:
                 bag.pop(item_id)
@@ -147,7 +146,7 @@ def adjust_shopping_bag(request, item_id):
             elif quantity < current_quantity:
                 inventory_item.quantity += (current_quantity - quantity)  # Restore the difference
                 inventory_item.save()
-            
+
             # Update the bag quantity
             bag[item_id] = quantity
             messages.success(request, f'Update {product.name} quantity to your {bag[item_id]}!')
@@ -156,7 +155,7 @@ def adjust_shopping_bag(request, item_id):
             inventory_item = Inventory.objects.get(product_id=item_id)
             inventory_item.quantity += current_quantity  # Return the entire quantity to inventory
             inventory_item.save()
-            
+
             bag.pop(item_id)
             messages.success(request, f'Removed {product.name} from your shopping bag!')
 
@@ -201,5 +200,5 @@ def remove_from_shopping_bag(request, item_id):
         return HttpResponse(status=200)
 
     except Exception as e:
-        messages.error(request, f'Error removing item: {e}' )
+        messages.error(request, f'Error removing item: {e}')
         return HttpResponse(status=500)

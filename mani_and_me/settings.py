@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-dir9k1$%c5!@9!@s$jw0$=m&v#ejz@y013gntp^sak^frcj)2i
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['8000-kenyarae-maniandme-b8erhd4dxvy.ws.codeinstitute-ide.net']
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'allauth',
     'allauth.account',
-    'allauth.socialaccount', # Optional -- requires install using `django-allauth[socialaccount]`.
+    # Optional -- requires install using `django-allauth[socialaccount]`.
+    'allauth.socialaccount',
     'home',
     'products',
     'bag',
@@ -79,11 +80,13 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
-                'django.template.context_processors.request', # required by allauth.
+                # required by allauth.
+                'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
-                'bag.contexts.bag_contents' # Access the shopping bag
+                # Access the shopping bag
+                'bag.contexts.bag_contents'
             ],
             'builtins': [
                 'crispy_forms.templatetags.crispy_forms_tags',

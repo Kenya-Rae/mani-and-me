@@ -4,15 +4,13 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.db.models.functions import Lower
 
-from django.http import HttpResponseRedirect
-from django.http import JsonResponse
 
 from django.forms.models import inlineformset_factory
-from django.forms import modelformset_factory
-from .models import Product, Category, Inventory
-from .forms import ProductForm, InventoryForm, InventoryFormSet, ProductImageFormSet, ProductImage, ProductImageForm
+from .models import Product, Category
+from .forms import ProductForm, ProductImageFormSet, ProductImage, ProductImageForm
 
 # Create your views here.
+
 
 def all_products(request):
     """ View to show products, including filtering and queries -
@@ -25,7 +23,7 @@ def all_products(request):
     direction = None
     view = 'grid'  # Default view
 
-    # Handle (Grid or List) view toggle 
+    # Handle (Grid or List) view toggle
     if 'view' in request.GET:
         view = request.GET['view']
 
@@ -61,7 +59,7 @@ def all_products(request):
             if not query:
                 messages.error(request, "Please enter a search criteria!")
                 return redirect(reverse('products'))
-            
+
             queries = Q(name__icontains=query) | Q(description__icontains=query)
             products = products.filter(queries)
 
@@ -80,7 +78,7 @@ def all_products(request):
 
 
 def product_info(request, product_id):
-    """ View to show product information and inventory 
+    """ View to show product information and inventory
     - Code used from Boutique Ado (Adapted)"""
 
     product = get_object_or_404(Product, pk=product_id)
@@ -91,7 +89,7 @@ def product_info(request, product_id):
         'inventory': inventory,
     }
 
-    return render (request, 'products/product_info.html', context)
+    return render(request, 'products/product_info.html', context)
 
 
 @login_required
@@ -108,10 +106,12 @@ def add_product(request):
             product = product_form.save()
             formset.instance = product
             formset.save()
-            messages.success(request, 'Successfully added the product with images!')
+            messages.success(request,
+                             'Successfully added the product with images!')
             return redirect(reverse('product_info', args=[product.id]))
         else:
-            messages.error(request, 'Failed to add product. Please ensure the form and images are valid.')
+            messages.error(request,
+                           'Failed to add product. Please ensure the form and images are valid.')
     else:
         product_form = ProductForm()
         formset = ProductImageFormSet()
@@ -133,8 +133,8 @@ def edit_product(request, product_id):
 
     product = get_object_or_404(Product, pk=product_id)
     ProductImageFormSet = inlineformset_factory(
-        Product, ProductImage, 
-        form=ProductImageForm, 
+        Product, ProductImage,
+        form=ProductImageForm,
         extra=max(3 - product.images.count(), 1),  # Add at least 1 empty form
         can_delete=True
     )
@@ -149,7 +149,8 @@ def edit_product(request, product_id):
             messages.success(request, 'Successfully updated product!')
             return redirect(reverse('product_info', args=[product.id]))
         else:
-            messages.error(request, 'Failed to update product. Please ensure the form is valid.')
+            messages.error(request,
+                           'Failed to update product. Please ensure the form is valid.')
     else:
         form = ProductForm(instance=product)
         formset = ProductImageFormSet(instance=product)
@@ -184,7 +185,7 @@ def manage_inventory(request):
     if not request.user.is_superuser:
         messages.error(request, 'Sorry, only store owners can do that.')
         return redirect(reverse('home'))
-        
+
     products = Product.objects.all()  # Get all products
 
     context = {

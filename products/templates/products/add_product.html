@@ -23,25 +23,27 @@
         <div class="col-12 col-md-6">
             <form method="POST" enctype="multipart/form-data" action="{% url 'add_product' %}">
                 {% csrf_token %}
+                
                 <div class="form-group">
                     <h3>Product Details</h3>
                     {{ product_form|crispy }}
-                </div>
 
-                <div class="form-group">
                     <h3>Product Images</h3>
-                    {{ formset.management_form }}
+                <div class="form-group">
+                    {{ formset.management_form }} <!-- Management form for the formset -->
+
                     {% for form in formset %}
-                        <div class="form-row">
-                            {{ form.image.label_tag }}
-                            {{ form.image }}
-                            {% if form.instance.pk %}
-                                <img src="{{ form.instance.image.url }}" alt="{{ form.instance.image.name }}" width="100">
-                            {% endif %}
-                            {{ form.DELETE.label_tag }}
-                            {{ form.DELETE }}
+                        <div class="form-row mb-2">
+                            <div class="col-md-6">
+                                {% for field in form %}
+                                    {% if field.name == 'image' %}
+                                        {{ field }} <!-- Additional image input field -->
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
                         </div>
                     {% endfor %}
+                </div>
                 </div>
 
                 <div class="text-right">

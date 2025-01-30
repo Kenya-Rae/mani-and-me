@@ -27,17 +27,19 @@ class ProductImageForm(forms.ModelForm):
         model = ProductImage
         fields = '__all__'
 
+    image = forms.ImageField(widget=CustomClearableFileInput, required=False)  # Add widget here
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['image'].widget.attrs['class'] = 'border-black rounded-0'
 
     def save(self, *args, **kwargs):
-        # Customize the upload_to path
-        # dynamically based on the associated product
+        # Customize the upload_to path dynamically based on the associated product
         if not self.instance.pk:  # Only for new instances
             product_slug = slugify(self.instance.product.name)
             self.instance.image.field.upload_to = f'product_images/{product_slug}/'
         return super().save(*args, **kwargs)
+
 
 
 class InventoryForm(forms.Form):

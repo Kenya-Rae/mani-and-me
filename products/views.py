@@ -9,8 +9,8 @@ from django.http import JsonResponse
 
 from django.forms.models import inlineformset_factory
 from django.forms import modelformset_factory
-from .models import Product, Category, Inventory
-from .forms import ProductForm, InventoryForm, InventoryFormSet, ProductImageFormSet, ProductImage, ProductImageForm
+from .models import Product, Category
+from .forms import ProductForm,ProductImageFormSet, ProductImage, ProductImageForm
 
 # Create your views here.
 
@@ -84,11 +84,11 @@ def product_info(request, product_id):
     - Code used from Boutique Ado (Adapted)"""
 
     product = get_object_or_404(Product, pk=product_id)
-    inventory = product.inventory.all()
+    # inventory = product.inventory.all()
 
     context = {
         'product': product,
-        'inventory': inventory,
+        # 'inventory': inventory,
     }
 
     return render (request, 'products/product_info.html', context)
@@ -178,17 +178,17 @@ def delete_product(request, product_id):
     return redirect(reverse('products'))
 
 
-@login_required
-def manage_inventory(request):
-    """ View to display all products with inventory details. """
-    if not request.user.is_superuser:
-        messages.error(request, 'Sorry, only store owners can do that.')
-        return redirect(reverse('home'))
+# @login_required
+# def manage_inventory(request):
+#     """ View to display all products with inventory details. """
+#     if not request.user.is_superuser:
+#         messages.error(request, 'Sorry, only store owners can do that.')
+#         return redirect(reverse('home'))
         
-    products = Product.objects.all()  # Get all products
+#     products = Product.objects.all()  # Get all products
 
-    context = {
-        'products': products,
-    }
+#     context = {
+#         'products': products,
+#     }
 
-    return render(request, 'products/manage_inventory.html', context)
+#     return render(request, 'products/manage_inventory.html', context)

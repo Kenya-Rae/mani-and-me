@@ -32,6 +32,7 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+
 class ProductImage(models.Model):
     """ For multiple images per product"""
     product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
@@ -40,16 +41,17 @@ class ProductImage(models.Model):
     def __str__(self):
         return f"Image for {self.product.name}"
 
-class Inventory(models.Model):
-    """ For tracking inventory - Show customers whats available"""
-    class Meta: # Change category name in admin view
-        verbose_name_plural = 'Inventory'
 
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='inventory')
-    size = models.CharField(max_length=10, blank=True, null=True)  # Size field (optional)
-    quantity = models.PositiveIntegerField(default=0)  # Inventory count
+# class Inventory(models.Model):
+#     """ For tracking inventory - Show customers whats available"""
+#     class Meta: # Change category name in admin view
+#         verbose_name_plural = 'Inventory'
 
-    def __str__(self):
-        if self.size:
-            return f"{self.product.name} - Size {self.size}: {self.quantity} in stock"
-        return f"{self.product.name}: {self.quantity} in stock"
+#     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='inventory')
+#     size = models.CharField(max_length=10, blank=True, null=True)  # Size field (optional)
+#     quantity = models.PositiveIntegerField(default=0)  # Inventory count
+
+#     def __str__(self):
+#         if self.size:
+#             return f"{self.product.name} - Size {self.size}: {self.quantity} in stock"
+#         return f"{self.product.name}: {self.quantity} in stock"

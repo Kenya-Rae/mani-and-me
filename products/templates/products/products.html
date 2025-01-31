@@ -92,7 +92,20 @@
                                     <div class="card-footer bg-white pt-0 border-0 text-left">
                                         <div class="row">
                                             <div class="col">
-                                                <p class="lead mb-0 text-left font-weight-bold">£{{ product.price }}</p>
+                                                <!-- Price and Wishlist icon next to each other -->
+                                                <div class="d-flex justify-content-start align-items-center">
+                                                    <p class="lead mb-0 text-left font-weight-bold">£{{ product.price }}</p>
+                                                    {% if user.is_authenticated %}
+                                                        {% if product not in request.user.wishlist.all %}
+                                                            <a href="{% url 'add_to_wishlist' product.id %}" class="btn btn-sm ml-2">
+                                                                <i class="fas fa-heart wishlist-icon"></i>
+                                                            </a>
+                                                        {% else %}
+                                                            <p>Please <a href="{% url 'login' %}">login</a> to add to your wishlist.</p>
+                                                        {% endif %}
+                                                    {% endif %}
+                                                </div>
+                                                <!-- Category, Rating, and SKU -->
                                                 {% if product.category %}
                                                     <p class="small mt-1 mb-0">
                                                         <a href="{% url 'products' %}?category={{ product.category.friendly_name }}" class="text-muted">
@@ -110,15 +123,15 @@
                                                 {% else %}
                                                     <small class="text-muted">No SKU</small>
                                                 {% endif %}
-                                                {% if request.user.is_superuser %}
+                                              {% if request.user.is_superuser %}
                                                 <small class="ml-3">
-                                                    <a href="{% url 'edit_product' product.id %}">Edit</a> | 
-                                                    <a class="text-danger" href="{% url 'delete_product' product.id %}">Delete</a>
+                                                  <a href="{% url 'edit_product' product.id %}">Edit</a> | 
+                                                  <a class="text-danger" href="{% url 'delete_product' product.id %}">Delete</a>
                                                 </small>
-                                                {% endif %}
+                                              {% endif %}
                                             </div>
                                         </div>
-                                    </div>
+                                    </div>                                    
                                 </div>
                             </div>
                         {% else %}

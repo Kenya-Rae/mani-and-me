@@ -192,6 +192,24 @@ body {
   border-radius: 4px;
 }
 
+/* Make the wishlist icon larger */
+.fas.fa-heart.fa-lg {
+  font-size: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  align-items: center;
+}
+
+.ml-3 {
+  margin-left: 1rem;
+}
+
+.wishlist-icon {
+  font-size: 20px;
+}
+
 .carousel-item img {
   width: 100%; /* Ensures images scale to fit the container */
   height: 400px;
@@ -326,6 +344,7 @@ input[name="q"]::placeholder {
   overflow-x: hidden;
   overflow-y: auto;
 }
+
 /* -------------------------------- Media Queries */
 
 /* Slightly larger container on xl screens */

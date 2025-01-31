@@ -10,7 +10,7 @@ from django.http import JsonResponse
 from django.forms.models import inlineformset_factory
 from django.forms import modelformset_factory
 from .models import Product, Category
-from .forms import ProductForm,ProductImageFormSet, ProductImage, ProductImageForm
+from .forms import ProductImage, ProductForm, ProductImageFormSet, ProductImageForm
 
 # Create your views here.
 
@@ -84,11 +84,9 @@ def product_info(request, product_id):
     - Code used from Boutique Ado (Adapted)"""
 
     product = get_object_or_404(Product, pk=product_id)
-    # inventory = product.inventory.all()
 
     context = {
         'product': product,
-        # 'inventory': inventory,
     }
 
     return render (request, 'products/product_info.html', context)
@@ -108,10 +106,10 @@ def add_product(request):
             product = product_form.save()
             formset.instance = product
             formset.save()
-            messages.success(request, 'Successfully added the product with images!')
+            messages.success(request, 'Successfully added product!')
             return redirect(reverse('product_info', args=[product.id]))
         else:
-            messages.error(request, 'Failed to add product. Please ensure the form and images are valid.')
+            messages.error(request, 'Failed to add product. Please ensure the form is valid.')
     else:
         product_form = ProductForm()
         formset = ProductImageFormSet()
@@ -126,22 +124,18 @@ def add_product(request):
 
 @login_required
 def edit_product(request, product_id):
-    """Edit a product in the store."""
     if not request.user.is_superuser:
         messages.error(request, 'Sorry, only store owners can do that.')
         return redirect(reverse('home'))
 
     product = get_object_or_404(Product, pk=product_id)
-    ProductImageFormSet = inlineformset_factory(
-        Product, ProductImage, 
-        form=ProductImageForm, 
-        extra=max(3 - product.images.count(), 1),  # Add at least 1 empty form
-        can_delete=True
+    formset_class = inlineformset_factory(
+        Product, ProductImage, form=ProductImageForm, extra=3, can_delete=True
     )
 
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES, instance=product)
-        formset = ProductImageFormSet(request.POST, request.FILES, instance=product)
+        formset = formset_class(request.POST, request.FILES, instance=product)
 
         if form.is_valid() and formset.is_valid():
             form.save()
@@ -152,17 +146,16 @@ def edit_product(request, product_id):
             messages.error(request, 'Failed to update product. Please ensure the form is valid.')
     else:
         form = ProductForm(instance=product)
-        formset = ProductImageFormSet(instance=product)
+        formset = formset_class(instance=product)
         messages.info(request, f'You are editing {product.name}')
 
-    template = 'products/edit_product.html'
     context = {
         'form': form,
         'formset': formset,
         'product': product,
     }
 
-    return render(request, template, context)
+    return render(request, 'products/edit_product.html', context)
 
 
 @login_required
@@ -178,17 +171,17 @@ def delete_product(request, product_id):
     return redirect(reverse('products'))
 
 
-# @login_required
-# def manage_inventory(request):
-#     """ View to display all products with inventory details. """
-#     if not request.user.is_superuser:
-#         messages.error(request, 'Sorry, only store owners can do that.')
-#         return redirect(reverse('home'))
+@login_required
+def manage_inventory(request):
+    """ View to display all products with inventory details. """
+    if not request.user.is_superuser:
+        messages.error(request, 'Sorry, only store owners can do that.')
+        return redirect(reverse('home'))
         
-#     products = Product.objects.all()  # Get all products
+    products = Product.objects.all()  # Get all products
 
-#     context = {
-#         'products': products,
-#     }
+    context = {
+        'products': products,
+    }
 
-#     return render(request, 'products/manage_inventory.html', context)
+    return render(request, 'products/manage_inventory.html', context)

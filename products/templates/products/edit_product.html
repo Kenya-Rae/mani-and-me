@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 {% load static %}
 
 {% block page_header %}
@@ -25,31 +26,23 @@
         <div class="col-12 col-md-6">
             <form method="POST" action="{% url 'edit_product' product.id %}" class="form mb-2" enctype="multipart/form-data">
                 {% csrf_token %}
+
                 <h3>Product Details</h3>
-                <div class="form-group">
-                    {{ form|crispy }}
-                </div>
+                {{ form|crispy }}
 
                 <h3>Product Images</h3>
-                <div class="form-group">
-                    {{ formset.management_form }}
-                    {% for form in formset %}
-                        <div class="form-row mb-2">
-                            <div>
-                                {{ form.image.label_tag }}
-                                {{ form.image }}
+                {{ formset.management_form }}
+                {% for form in formset %}
+                    <div class="form-group">
+                        {% if form.instance.image %}
+                            <div class="mb-2">
+                                <img src="{{ form.instance.image.url }}" width="100" height="100" class="rounded shadow-sm">
                             </div>
-                            {% if form.instance.pk %}
-                                <div class="mt-2">
-                                    <img src="{{ form.instance.image.url }}" alt="{{ form.instance.image.name }}" width="100">
-                                    <p>{{ form.image.name }}</p>
-                                    {{ form.DELETE.label_tag }}
-                                    {{ form.DELETE }}
-                                </div>
-                            {% endif %}
-                        </div>
-                    {% endfor %}
-                </div>
+                        {% endif %}
+                        {{ form.image|as_crispy_field }}
+                        {{ form.DELETE|as_crispy_field }}
+                    </div>
+                {% endfor %}
 
                 <div class="text-right">
                     <a class="btn btn-outline-black rounded-2" href="{% url 'products' %}">Cancel</a>
@@ -59,4 +52,19 @@
         </div>            
     </div>
 </div>
+{% endblock %}
+
+{% block postloadjs %}
+    {{ block.super }}
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll("input[type='file']").forEach(input => {
+                input.addEventListener("change", function() {
+                    if (this.files.length > 0) {
+                        this.closest('.form-group').querySelector('.filename-display').innerText = `Selected: ${this.files[0].name}`;
+                    }
+                });
+            });
+        });
+    </script>
 {% endblock %}

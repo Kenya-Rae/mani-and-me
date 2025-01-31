@@ -23,7 +23,7 @@ class ProductAdmin(admin.ModelAdmin):
         'rating',
         'has_sizes',
     )
-    # inlines = [ProductImageInline, InventoryInline]
+    inlines = [ProductImageInline]
     ordering = ('sku',)
     list_filter = ('category', 'has_sizes')
     search_fields = ('name', 'sku', 'description')

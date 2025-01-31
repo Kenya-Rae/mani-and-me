@@ -28,21 +28,14 @@
                 {% csrf_token %}
 
                 <h3>Product Details</h3>
-                {{ form|crispy }}
-
-                <h3>Product Images</h3>
-                {{ formset.management_form }}
-                {% for form in formset %}
-                    <div class="form-group">
-                        {% if form.instance.image %}
-                            <div class="mb-2">
-                                <img src="{{ form.instance.image.url }}" width="100" height="100" class="rounded shadow-sm">
-                            </div>
+                {% csrf_token %}
+                    {% for field in form %}
+                        {% if field.name != 'image' %}
+                            {{ field | as_crispy_field }}
+                        {% else %}
+                            {{ field }}
                         {% endif %}
-                        {{ form.image|as_crispy_field }}
-                        {{ form.DELETE|as_crispy_field }}
-                    </div>
-                {% endfor %}
+                    {% endfor %}
 
                 <div class="text-right">
                     <a class="btn btn-outline-black rounded-2" href="{% url 'products' %}">Cancel</a>
@@ -57,14 +50,9 @@
 {% block postloadjs %}
     {{ block.super }}
     <script type="text/javascript">
-        document.addEventListener("DOMContentLoaded", function() {
-            document.querySelectorAll("input[type='file']").forEach(input => {
-                input.addEventListener("change", function() {
-                    if (this.files.length > 0) {
-                        this.closest('.form-group').querySelector('.filename-display').innerText = `Selected: ${this.files[0].name}`;
-                    }
-                });
-            });
+        $('#new-image').change(function() {
+            var file = $('#new-image')[0].files[0];
+            $('#filename').text(`Image will be set to: ${file.name}`);
         });
     </script>
 {% endblock %}

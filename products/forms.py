@@ -7,11 +7,24 @@ from .widgets import CustomClearableFileInput
 
 
 class ProductForm(forms.ModelForm):
-    image = forms.ImageField(label='', required=False, widget=CustomClearableFileInput)
-
     class Meta:
         model = Product
         fields = '__all__'
+
+    # Custom widget for the images
+    image = forms.ImageField(label=None, required=False, widget=CustomClearableFileInput)
+    image_2 = forms.ImageField(label=None, required=False, widget=CustomClearableFileInput)
+    image_3 = forms.ImageField(label=None, required=False, widget=CustomClearableFileInput)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        # Count the number of images uploaded
+        image_fields = ['image', 'image_2', 'image_3']
+        uploaded_images = sum([1 for field in image_fields if cleaned_data.get(field)])
+
+        if uploaded_images > 3:
+            raise forms.ValidationError('You can only upload a maximum of 3 images.')
+        return cleaned_data
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

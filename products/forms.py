@@ -7,7 +7,7 @@ from .widgets import CustomClearableFileInput
 
 
 class ProductForm(forms.ModelForm):
-    image = forms.ImageField(label='Main Image', required=False, widget=CustomClearableFileInput)
+    image = forms.ImageField(label='', required=False, widget=CustomClearableFileInput)
 
     class Meta:
         model = Product

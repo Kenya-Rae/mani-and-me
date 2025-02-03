@@ -6,6 +6,12 @@ from .models import Product, ProductImage, Category, Inventory
 from .widgets import CustomClearableFileInput
 
 
+from django import forms
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit
+from .models import Product, Category
+from .widgets import CustomClearableFileInput
+
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
@@ -29,9 +35,20 @@ class ProductForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        # Populate the category field with friendly names
+        categories = Category.objects.all()
+        friendly_names = [(c.id, c.get_friendly_name()) for c in categories]
+        self.fields['category'].choices = friendly_names
+
+        # Apply crispy form styles
         self.helper = FormHelper()
         self.helper.form_method = 'POST'
         self.helper.add_input(Submit('submit', 'Save Product'))
+
+        # Apply custom CSS classes to all form fields
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'border-black rounded-2'
 
 
 class ProductImageForm(forms.ModelForm):

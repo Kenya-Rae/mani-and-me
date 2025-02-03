@@ -11,19 +11,20 @@ class ProductForm(forms.ModelForm):
         model = Product
         fields = '__all__'
 
-    # Custom widget for the images
-    image = forms.ImageField(label=None, required=False, widget=CustomClearableFileInput)
-    image_2 = forms.ImageField(label=None, required=False, widget=CustomClearableFileInput)
-    image_3 = forms.ImageField(label=None, required=False, widget=CustomClearableFileInput)
+    image = forms.ImageField(label='Main Image', required=False, widget=CustomClearableFileInput)
+    image_2 = forms.ImageField(label='Additional Image 2', required=False, widget=CustomClearableFileInput)
+    image_3 = forms.ImageField(label='Additional Image 3', required=False, widget=CustomClearableFileInput)
 
     def clean(self):
         cleaned_data = super().clean()
-        # Count the number of images uploaded
+        # Any specific validation for the images
         image_fields = ['image', 'image_2', 'image_3']
         uploaded_images = sum([1 for field in image_fields if cleaned_data.get(field)])
 
+        # Check if the user uploads more than 3 images
         if uploaded_images > 3:
             raise forms.ValidationError('You can only upload a maximum of 3 images.')
+
         return cleaned_data
 
     def __init__(self, *args, **kwargs):
@@ -32,8 +33,10 @@ class ProductForm(forms.ModelForm):
         self.helper.form_method = 'POST'
         self.helper.add_input(Submit('submit', 'Save Product'))
 
+
 class ProductImageForm(forms.ModelForm):
-    image = forms.ImageField(label='Additional Image', required=False, widget=CustomClearableFileInput)
+    # This form will handle both the main image and additional images
+    image = forms.ImageField(label='Image', required=False, widget=CustomClearableFileInput)
 
     class Meta:
         model = ProductImage
@@ -42,7 +45,7 @@ class ProductImageForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_tag = False  # So crispy doesn't wrap it in another <form> tag
+        self.helper.form_tag = False  # Don't wrap the form in another <form> tag
 
 
 class InventoryForm(forms.ModelForm):
@@ -69,4 +72,3 @@ class InventoryUpdateForm(forms.ModelForm):
 ProductImageFormSet = inlineformset_factory(
     Product, ProductImage, form=ProductImageForm, extra=3, can_delete=True
 )
-

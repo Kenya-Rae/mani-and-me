@@ -84,9 +84,11 @@ def product_info(request, product_id):
     - Code used from Boutique Ado (Adapted)"""
 
     product = get_object_or_404(Product, pk=product_id)
+    images = product.images.all()
 
     context = {
         'product': product,
+        'images': images,
     }
 
     return render (request, 'products/product_info.html', context)
@@ -94,37 +96,42 @@ def product_info(request, product_id):
 
 @login_required
 def add_product(request):
+    """ Add a product to the store. """
     if not request.user.is_superuser:
         messages.error(request, 'Sorry, only store owners can do that.')
         return redirect(reverse('home'))
-
+        
     if request.method == 'POST':
-        form = ProductForm(request.POST, request.FILES)
-        if form.is_valid():
-            product = form.save()
+        product_form = ProductForm(request.POST, request.FILES)
 
-            # Check if product has sizes
-            if product.has_sizes:
-                # Add inventory for different sizes (you can add any sizes you want)
-                sizes = ['S', 'M', 'L']  # Example sizes, modify as needed
+        # Check if the product form is valid
+        if product_form.is_valid():
+            product = product_form.save(commit=False)  # Don't save yet
 
-                for size in sizes:
-                    Inventory.objects.create(
-                        product=product,
-                        size=size,
-                        quantity=1  # Default quantity
-                    )
-                messages.success(request, 'Successfully added product with sizes!')
-            else:
-                messages.success(request, 'Successfully added product!')
+            # Save the product first (so we can associate images with it)
+            product.save()
 
-            return redirect(reverse('product_info', args=[product.id]))
+            # Now, handle additional images (image_2 and image_3)
+            image_2 = product_form.cleaned_data.get('image_2')
+            image_3 = product_form.cleaned_data.get('image_3')
+
+            # Set image_2 and image_3 to the product instance if present
+            if image_2:
+                product.image_2 = image_2
+            if image_3:
+                product.image_3 = image_3
+
+            # Save the product again with the additional images
+            product.save()
+
+            return redirect('products')  # Or wherever you want to redirect after adding the product
         else:
-            messages.error(request, 'Failed to add product. Please ensure the form is valid.')
-    else:
-        form = ProductForm()
+            return render(request, 'products/add_product.html', {'form': product_form})
 
-    return render(request, 'products/add_product.html', {'form': form})
+    else:
+        product_form = ProductForm()
+
+    return render(request, 'products/add_product.html', {'form': product_form})
 
 
 @login_required
@@ -139,11 +146,25 @@ def edit_product(request, product_id):
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES, instance=product)
         if form.is_valid():
-            form.save()
-            messages.success(request, 'Successfully updated product!')
+            product = form.save()  # Save the product with any updates
+
+            # Handle additional images if uploaded
+            image_2 = form.cleaned_data.get('image_2')
+            image_3 = form.cleaned_data.get('image_3')
+
+            if image_2:
+                product.image_2 = image_2
+            if image_3:
+                product.image_3 = image_3
+
+            # Save the product again with the additional images
+            product.save()
+
+            messages.success(request, 'Product updated successfully!')
             return redirect(reverse('product_info', args=[product.id]))
         else:
-            messages.error(request, 'Failed to update product. Please ensure the form is valid.')
+            messages.error(request, 'Failed to update the product. Please check the form.')
+
     else:
         form = ProductForm(instance=product)
 

@@ -132,6 +132,20 @@ body {
   font-weight: bold;
 }
 
+.go-back {
+  color: white;
+  background: #8d8d92;
+  color: white;
+}
+
+.go-back:hover {
+  background: #5d5e60;
+}
+
+a.btn.btn-sm.float-left.go-back {
+  margin-right: 5px;
+}
+
 /* Styling for the rotating bar */
 .product-scroll-bar {
   width: 100%;

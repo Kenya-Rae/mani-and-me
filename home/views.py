@@ -17,3 +17,7 @@ def about_us(request):
 
 def contact_us(request):
     return render(request, 'home/contact_us.html')
+
+
+def bloopers(request):
+    return render(request, 'home/bloopers.html')

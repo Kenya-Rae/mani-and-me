@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_header %}
+<div class="container header-container">
+    <div class="row">
+        <div class="col"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container h-100 home-content">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <hr>
+                <h2 class="logo-font mb-4 text-center">Our Journey</h2>
+                <button type="button" class="btn btn-sm float-left go-back" onclick="history.back()">
+                    <i class="fa-solid fa-sm fa-arrow-left"></i>
+                     Go Back
+                </button>
+                <hr>
+            </div>
+        </div>
+        <div class="row g-3 text-center">
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm">
+                    <img src="{{ MEDIA_URL }}blooper_1.jpg" class="card-img-top rounded small-thumbnail" alt="Creative Process">
+                    <div class="card-body">
+                        <p class="card-text">Behind the scenes of our creative process.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm">
+                    <img src="{{ MEDIA_URL }}blooper_2.jpg" class="card-img-top rounded small-thumbnail" alt="Personalized Products">
+                    <div class="card-body">
+                        <p class="card-text">Every item is made with love and care.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm">
+                    <img src="{{ MEDIA_URL }}blooper_3.jpg" class="card-img-top rounded small-thumbnail" alt="Joyful Moments">
+                    <div class="card-body">
+                        <p class="card-text">Moments of joy that inspire our work.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -54,13 +54,10 @@ class StripeWH_Handler:
         save_info = intent.metadata.save_info
 
         # Get the Charge object
-        stripe_charge = stripe.Charge.retrieve(
-            intent.latest_charge
-        )
-
-        billing_details = stripe_charge.billing_details # updated
+        stripe_charge = stripe.Charge.retrieve(intent.latest_charge)
+        billing_details = stripe_charge.billing_details
         shipping_details = intent.shipping
-        grand_total = round(stripe_charge.amount / 100, 2) # updated
+        grand_total = round(stripe_charge.amount / 100, 2)
 
         # Clean data in the shipping details
         for field, value in shipping_details.address.items():
@@ -105,6 +102,7 @@ class StripeWH_Handler:
             except Order.DoesNotExist:
                 attempt += 1
                 time.sleep(1)
+        
         if order_exists:
             self._send_confirmation_email(order)
             return HttpResponse(
@@ -113,6 +111,7 @@ class StripeWH_Handler:
         else:
             order = None
             try:
+                # Create the new order
                 order = Order.objects.create(
                     full_name=shipping_details.name,
                     user_profile=profile,
@@ -127,6 +126,8 @@ class StripeWH_Handler:
                     original_bag=bag,
                     stripe_pid=pid,
                 )
+                
+                # Loop through the items in the bag and create OrderLineItems
                 for item_id, item_data in json.loads(bag).items():
                     product = Product.objects.get(id=item_id)
                     if isinstance(item_data, int):
@@ -145,16 +146,34 @@ class StripeWH_Handler:
                                 product_size=size,
                             )
                             order_line_item.save()
+
+                # Adjust the inventory for each line item
+                for line_item in order.lineitems.all():
+                    product = line_item.product
+                    size = line_item.product_size
+                    quantity = line_item.quantity
+
+                    # Get the matching inventory item
+                    inventory_item = Inventory.objects.filter(product=product, size=size).first() if size else Inventory.objects.filter(product=product).first()
+
+                    if inventory_item:
+                        inventory_item.quantity -= quantity
+                        inventory_item.save()
+                    else:
+                        # Optionally handle missing inventory, e.g., log it or send a warning
+                        print(f"Warning: No inventory found for product {product.name} and size {size}")
+
             except Exception as e:
                 if order:
                     order.delete()
                 return HttpResponse(
                     content=f'Webhook received: {event["type"]} | ERROR: {e}',
                     status=500)
-        self._send_confirmation_email(order)
-        return HttpResponse(
-            content=f'Webhook received: {event["type"]} | SUCCESS: Created order in webhook',
-            status=200)
+
+            self._send_confirmation_email(order)
+            return HttpResponse(
+                content=f'Webhook received: {event["type"]} | SUCCESS: Created order in webhook',
+                status=200)
 
     def handle_payment_intent_payment_failed(self, event):
         """

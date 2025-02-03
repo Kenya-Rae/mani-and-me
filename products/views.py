@@ -100,7 +100,7 @@ def add_product(request):
     if not request.user.is_superuser:
         messages.error(request, 'Sorry, only store owners can do that.')
         return redirect(reverse('home'))
-        
+
     if request.method == 'POST':
         product_form = ProductForm(request.POST, request.FILES)
 
@@ -124,9 +124,26 @@ def add_product(request):
             # Save the product again with the additional images
             product.save()
 
-            return redirect('products')  # Or wherever you want to redirect after adding the product
+            # Check if product has sizes
+            if product.has_sizes:
+                # Define the sizes (you can modify these as needed)
+                sizes = ['S', 'M', 'L']  # Example sizes, modify as needed
+
+                # Create inventory items for each size
+                for size in sizes:
+                    Inventory.objects.create(
+                        product=product,
+                        size=size,
+                        quantity=1  # Default quantity
+                    )
+                messages.success(request, 'Successfully added product with sizes and inventory!')
+            else:
+                messages.success(request, 'Successfully added product!')
+
+            # Redirect to the products page or wherever you want
+            return redirect('products')
         else:
-            return render(request, 'products/add_product.html', {'form': product_form})
+            messages.error(request, 'Failed to add product. Please ensure the form is valid.')
 
     else:
         product_form = ProductForm()
@@ -203,8 +220,6 @@ def update_inventory(request, product_id):
         return redirect(reverse('home'))
 
     product = get_object_or_404(Product, id=product_id)
-
-    # Get inventory associated with this product
     inventory = Inventory.objects.filter(product=product)
 
     if request.method == 'POST':
@@ -213,18 +228,23 @@ def update_inventory(request, product_id):
             size = form.cleaned_data.get('size')
             quantity = form.cleaned_data.get('quantity')
 
-            # Check if the size already exists
             existing_inventory = Inventory.objects.filter(product=product, size=size).first()
 
             if existing_inventory:
-                # If size exists, update quantity instead of creating new
-                existing_inventory.quantity = quantity
-                existing_inventory.save()
-                messages.success(request, f"Updated stock for size {size}.")
+                # If size exists, check if the quantity is valid
+                if quantity < 0:
+                    messages.error(request, "Quantity cannot be negative.")
+                else:
+                    existing_inventory.quantity = quantity
+                    existing_inventory.save()
+                    messages.success(request, f"Updated stock for size {size}.")
             else:
                 # Add new size only if it's not already there
-                Inventory.objects.create(product=product, size=size, quantity=quantity)
-                messages.success(request, f"Added new size {size}.")
+                if quantity < 0:
+                    messages.error(request, "Quantity cannot be negative.")
+                else:
+                    Inventory.objects.create(product=product, size=size, quantity=quantity)
+                    messages.success(request, f"Added new size {size}.")
 
             return redirect('manage_inventory')
     else:

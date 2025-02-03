@@ -7,6 +7,7 @@ def view_shopping_bag(request):
     """ View to return the shopping bag """
     return render(request, 'bag/shopping_bag.html')
 
+
 def add_to_bag(request, item_id):
     """ Add a quantity of the specified product to the shopping bag """
 
@@ -24,13 +25,18 @@ def add_to_bag(request, item_id):
             messages.error(request, f"Not enough stock for size {size.upper()} of {product.name}.")
             return redirect(redirect_url)
 
+    # Check if we have an existing bag, else initialize one
     bag = request.session.get('bag', {})
 
+    # If size is provided, handle the size-specific inventory update
     if size:
-        if item_id in list(bag.keys()):
-            if size in bag[item_id]['items_by_size'].keys():
-                bag[item_id]['items_by_size'][size] += quantity
-                messages.success(request, f'Updated size {size.upper()} {product.name} quantity to {bag[item_id]["items_by_size"][size]}')
+        if item_id in bag:
+            if size in bag[item_id]['items_by_size']:
+                if bag[item_id]['items_by_size'][size] + quantity <= inventory.quantity:
+                    bag[item_id]['items_by_size'][size] += quantity
+                    messages.success(request, f'Updated size {size.upper()} {product.name} quantity to {bag[item_id]["items_by_size"][size]}')
+                else:
+                    messages.error(request, f"Not enough stock for size {size.upper()} of {product.name}.")
             else:
                 bag[item_id]['items_by_size'][size] = quantity
                 messages.success(request, f'Added size {size.upper()} {product.name} to your bag')
@@ -38,15 +44,19 @@ def add_to_bag(request, item_id):
             bag[item_id] = {'items_by_size': {size: quantity}}
             messages.success(request, f'Added size {size.upper()} {product.name} to your bag')
     else:
-        if item_id in list(bag.keys()):
-            bag[item_id] += quantity
-            messages.success(request, f'Updated {product.name} quantity to {bag[item_id]}')
+        if item_id in bag:
+            if bag[item_id] + quantity <= inventory.quantity:
+                bag[item_id] += quantity
+                messages.success(request, f'Updated {product.name} quantity to {bag[item_id]}')
+            else:
+                messages.error(request, f"Not enough stock for {product.name}.")
         else:
             bag[item_id] = quantity
             messages.success(request, f'Added {product.name} to your bag')
 
     request.session['bag'] = bag
     return redirect(redirect_url)
+
 
 def adjust_shopping_bag(request, item_id):
     """ Adjust the quantity of the specified product to the specified amount """
@@ -58,6 +68,7 @@ def adjust_shopping_bag(request, item_id):
         size = request.POST['product_size']
     bag = request.session.get('bag', {})
 
+    # Handle size-specific logic
     if size:
         inventory = Inventory.objects.filter(product=product, size=size).first()
         if inventory and inventory.quantity < quantity:
@@ -74,6 +85,11 @@ def adjust_shopping_bag(request, item_id):
                 bag.pop(item_id)
             messages.success(request, f'Removed size {size.upper()} {product.name} from your bag')
     else:
+        inventory = Inventory.objects.filter(product=product).first()
+        if inventory and inventory.quantity < quantity:
+            messages.error(request, f"Not enough stock for {product.name}.")
+            return redirect(reverse('view_shopping_bag'))
+
         if quantity > 0:
             bag[item_id] = quantity
             messages.success(request, f'Updated {product.name} quantity to {bag[item_id]}')
@@ -83,6 +99,7 @@ def adjust_shopping_bag(request, item_id):
 
     request.session['bag'] = bag
     return redirect(reverse('view_shopping_bag'))
+
 
 def remove_from_shopping_bag(request, item_id):
     """ Remove the item from the shopping bag """
@@ -94,30 +111,22 @@ def remove_from_shopping_bag(request, item_id):
             size = request.POST['product_size']
         bag = request.session.get('bag', {})
 
-        # Restore inventory when item is removed
+        # Check if the item is in the bag
         if size:
             if item_id in bag.keys() and size in bag[item_id]['items_by_size']:
-                removed_quantity = bag[item_id]['items_by_size'][size]
-                # Update inventory
-                inventory = Inventory.objects.filter(product=product, size=size).first()
-                if inventory:
-                    inventory.quantity += removed_quantity
-                    inventory.save()
+                # Simply remove the item from the bag without updating stock
                 del bag[item_id]['items_by_size'][size]
                 if not bag[item_id]['items_by_size']:
                     bag.pop(item_id)
+
                 messages.success(request, f'Removed size {size.upper()} {product.name} from your bag')
         else:
             if item_id in bag.keys():
-                removed_quantity = bag[item_id]
-                # Update inventory
-                inventory = Inventory.objects.filter(product=product).first()
-                if inventory:
-                    inventory.quantity += removed_quantity
-                    inventory.save()
+                # Simply remove the item from the bag without updating stock
                 bag.pop(item_id)
                 messages.success(request, f'Removed {product.name} from your bag')
 
+        # Save the updated bag to session
         request.session['bag'] = bag
         return HttpResponse(status=200)
 

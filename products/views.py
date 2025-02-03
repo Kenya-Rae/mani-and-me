@@ -9,8 +9,8 @@ from django.http import JsonResponse
 
 from django.forms.models import inlineformset_factory
 from django.forms import modelformset_factory
-from .models import Product, Category
-from .forms import ProductImage, ProductForm, ProductImageFormSet, ProductImageForm
+from .models import Product, Category, Inventory
+from .forms import ProductImage, ProductForm, ProductImageFormSet, ProductImageForm, InventoryForm, InventoryUpdateForm
 
 # Create your views here.
 
@@ -101,9 +101,24 @@ def add_product(request):
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            messages.success(request, 'Successfully added product!')
-            return redirect(reverse('product_info', args=[form.instance.id]))
+            product = form.save()
+
+            # Check if product has sizes
+            if product.has_sizes:
+                # Add inventory for different sizes (you can add any sizes you want)
+                sizes = ['S', 'M', 'L']  # Example sizes, modify as needed
+
+                for size in sizes:
+                    Inventory.objects.create(
+                        product=product,
+                        size=size,
+                        quantity=1  # Default quantity
+                    )
+                messages.success(request, 'Successfully added product with sizes!')
+            else:
+                messages.success(request, 'Successfully added product!')
+
+            return redirect(reverse('product_info', args=[product.id]))
         else:
             messages.error(request, 'Failed to add product. Please ensure the form is valid.')
     else:
@@ -150,15 +165,56 @@ def delete_product(request, product_id):
 
 @login_required
 def manage_inventory(request):
-    """ View to display all products with inventory details. """
+    """ Get all products and inventory information """
     if not request.user.is_superuser:
         messages.error(request, 'Sorry, only store owners can do that.')
         return redirect(reverse('home'))
-        
-    products = Product.objects.all()  # Get all products
 
-    context = {
-        'products': products,
-    }
+    products = Product.objects.prefetch_related('inventory').all()
+    return render(request, 'products/manage_inventory.html', {'products': products})
 
-    return render(request, 'products/manage_inventory.html', context)
+
+@login_required
+def update_inventory(request, product_id):
+    """ Allows users to update inventory stock for a product """
+    if not request.user.is_superuser:
+        messages.error(request, 'Sorry, only store owners can do that.')
+        return redirect(reverse('home'))
+
+    product = get_object_or_404(Product, id=product_id)
+
+    # Get inventory associated with this product
+    inventory = Inventory.objects.filter(product=product)
+
+    if request.method == 'POST':
+        form = InventoryUpdateForm(request.POST, initial={'product': product})
+        if form.is_valid():
+            size = form.cleaned_data.get('size')
+            quantity = form.cleaned_data.get('quantity')
+
+            # Check if the size already exists
+            existing_inventory = Inventory.objects.filter(product=product, size=size).first()
+
+            if existing_inventory:
+                # If size exists, update quantity instead of creating new
+                existing_inventory.quantity = quantity
+                existing_inventory.save()
+                messages.success(request, f"Updated stock for size {size}.")
+            else:
+                # Add new size only if it's not already there
+                Inventory.objects.create(product=product, size=size, quantity=quantity)
+                messages.success(request, f"Added new size {size}.")
+
+            return redirect('manage_inventory')
+    else:
+        # Pre-fill the form with the current inventory (size and quantity)
+        inventory_item = inventory.first() if inventory.exists() else None
+        form = InventoryUpdateForm(
+            initial={
+                'product': product,
+                'size': inventory_item.size if inventory_item else 'M',  # Default to 'M' if no inventory exists
+                'quantity': inventory_item.quantity if inventory_item else 1,  # Default to 1 if no inventory exists
+            }
+        )
+
+    return render(request, 'products/update_inventory.html', {'form': form, 'product': product})

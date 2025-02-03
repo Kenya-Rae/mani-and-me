@@ -49,16 +49,18 @@ class ProductImage(models.Model):
         return f"Image for {self.product.name}"
 
 
-# class Inventory(models.Model):
-#     """ For tracking inventory - Show customers whats available"""
-#     class Meta: # Change category name in admin view
-#         verbose_name_plural = 'Inventory'
+class Inventory(models.Model):
+    """ For tracking inventory - Show customers whats available"""
+    
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='inventory')
+    size = models.CharField(max_length=10, blank=True, null=True)
+    quantity = models.PositiveIntegerField(default=0)  # Stock count
 
-#     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='inventory')
-#     size = models.CharField(max_length=10, blank=True, null=True)  # Size field (optional)
-#     quantity = models.PositiveIntegerField(default=0)  # Inventory count
+    class Meta:
+        unique_together = ('product', 'size')  # Prevent duplicate size entries for the same product
+        verbose_name_plural = 'Inventory' # Change category name in admin view
 
-#     def __str__(self):
-#         if self.size:
-#             return f"{self.product.name} - Size {self.size}: {self.quantity} in stock"
-#         return f"{self.product.name}: {self.quantity} in stock"
+    def __str__(self):
+        size_info = f" - Size: {self.size}" if self.size else " - No Size"
+        return f"{self.product.name}{size_info} - Quantity: {self.quantity}"
+

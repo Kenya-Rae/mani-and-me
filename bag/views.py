@@ -1,15 +1,11 @@
 from django.shortcuts import render, redirect, reverse, HttpResponse, get_object_or_404
 from django.contrib import messages
 
-from products.models import Product
-
-# Create your views here.
+from products.models import Product, Inventory
 
 def view_shopping_bag(request):
     """ View to return the shopping bag """
-
-    return render (request, 'bag/shopping_bag.html')
-
+    return render(request, 'bag/shopping_bag.html')
 
 def add_to_bag(request, item_id):
     """ Add a quantity of the specified product to the shopping bag """
@@ -20,6 +16,14 @@ def add_to_bag(request, item_id):
     size = None
     if 'product_size' in request.POST:
         size = request.POST['product_size']
+
+    # Check the inventory for the selected size if applicable
+    if size:
+        inventory = Inventory.objects.filter(product=product, size=size).first()
+        if inventory and inventory.quantity < quantity:
+            messages.error(request, f"Not enough stock for size {size.upper()} of {product.name}.")
+            return redirect(redirect_url)
+
     bag = request.session.get('bag', {})
 
     if size:
@@ -43,10 +47,9 @@ def add_to_bag(request, item_id):
 
     request.session['bag'] = bag
     return redirect(redirect_url)
-    
 
 def adjust_shopping_bag(request, item_id):
-    """Adjust the quantity of the specified product to the specified amount"""
+    """ Adjust the quantity of the specified product to the specified amount """
 
     product = get_object_or_404(Product, pk=item_id)
     quantity = int(request.POST.get('quantity'))
@@ -56,6 +59,12 @@ def adjust_shopping_bag(request, item_id):
     bag = request.session.get('bag', {})
 
     if size:
+        inventory = Inventory.objects.filter(product=product, size=size).first()
+        if inventory and inventory.quantity < quantity:
+            messages.error(request, f"Not enough stock for size {size.upper()} of {product.name}.")
+            return redirect(reverse('view_shopping_bag'))
+
+        # Adjust the bag and inventory
         if quantity > 0:
             bag[item_id]['items_by_size'][size] = quantity
             messages.success(request, f'Updated size {size.upper()} {product.name} quantity to {bag[item_id]["items_by_size"][size]}')
@@ -75,9 +84,8 @@ def adjust_shopping_bag(request, item_id):
     request.session['bag'] = bag
     return redirect(reverse('view_shopping_bag'))
 
-
 def remove_from_shopping_bag(request, item_id):
-    """Remove the item from the shopping bag"""
+    """ Remove the item from the shopping bag """
 
     try:
         product = get_object_or_404(Product, pk=item_id)
@@ -86,14 +94,29 @@ def remove_from_shopping_bag(request, item_id):
             size = request.POST['product_size']
         bag = request.session.get('bag', {})
 
+        # Restore inventory when item is removed
         if size:
-            del bag[item_id]['items_by_size'][size]
-            if not bag[item_id]['items_by_size']:
-                bag.pop(item_id)
-            messages.success(request, f'Removed size {size.upper()} {product.name} from your bag')
+            if item_id in bag.keys() and size in bag[item_id]['items_by_size']:
+                removed_quantity = bag[item_id]['items_by_size'][size]
+                # Update inventory
+                inventory = Inventory.objects.filter(product=product, size=size).first()
+                if inventory:
+                    inventory.quantity += removed_quantity
+                    inventory.save()
+                del bag[item_id]['items_by_size'][size]
+                if not bag[item_id]['items_by_size']:
+                    bag.pop(item_id)
+                messages.success(request, f'Removed size {size.upper()} {product.name} from your bag')
         else:
-            bag.pop(item_id)
-            messages.success(request, f'Removed {product.name} from your bag')
+            if item_id in bag.keys():
+                removed_quantity = bag[item_id]
+                # Update inventory
+                inventory = Inventory.objects.filter(product=product).first()
+                if inventory:
+                    inventory.quantity += removed_quantity
+                    inventory.save()
+                bag.pop(item_id)
+                messages.success(request, f'Removed {product.name} from your bag')
 
         request.session['bag'] = bag
         return HttpResponse(status=200)

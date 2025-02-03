@@ -91,6 +91,31 @@
                         </small>
                     {% endif %}
                     <p class="mt-3">{{ product.description }}</p>
+
+                    <!-- Stock Information -->
+                    {% if product.has_sizes %}
+                    <h4>Sizes and Stock</h4>
+                    <ul>
+                        {% for inventory in product.inventory.all %}
+                        <li>
+                            <strong>Size:</strong> {{ inventory.size }} | <strong>Stock:</strong> {{ inventory.quantity }}
+                            {% if inventory.quantity == 0 %}
+                            <span class="text-danger">Out of Stock</span>
+                            {% elif inventory.quantity <= 5 %}
+                            <span class="text-warning">Low Stock ({{ inventory.quantity }} left)</span>
+                            {% endif %}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p>Stock: {{ product.inventory.first.quantity }}</p>
+                    {% if product.inventory.first.quantity == 0 %}
+                        <span class="text-danger">Out of Stock</span>
+                    {% elif product.inventory.first.quantity <= 5 %}
+                        <span class="text-warning">Low Stock ({{ product.inventory.first.quantity }} left)</span>
+                    {% endif %}
+                    {% endif %}
+
                     <form class="form" action="{% url 'add_to_bag' product.id %}" method="POST">
                         {% csrf_token %}
                         <div class="form-row">
@@ -99,11 +124,9 @@
                                 <div class="col-12">
                                     <p><strong>Size:</strong></p>
                                     <select class="form-control rounded-0 w-50" name="product_size" id='id_product_size'>
-                                        <option value="xs">XS</option>
-                                        <option value="s">S</option>
-                                        <option value="m" selected>M</option>
-                                        <option value="l">L</option>
-                                        <option value="xl">XL</option>
+                                        {% for inventory in product.inventory.all %}
+                                            <option value="{{ inventory.size }}">{{ inventory.size }}</option>
+                                        {% endfor %}
                                     </select>
                                 </div>
                             {% endif %}
@@ -133,6 +156,7 @@
                                         </div>
                                     </div>
                             
+
                                     <!-- Wishlist Button next to Quantity input -->
                                     {% if user.is_authenticated %}
                                         {% if product not in request.user.wishlist.all %}
@@ -145,7 +169,7 @@
                                     {% endif %}
                                 </div>
                             </div>
-                            
+
                             <div class="col{% if s %}-12 mt-2{% endif %}">
                                 <a href="{% url 'products' %}" class="btn btn-outline-black rounded-2 mt-5">
                                     <span class="icon">

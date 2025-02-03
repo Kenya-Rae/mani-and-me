@@ -2,7 +2,7 @@ from django import forms
 from django.forms.models import inlineformset_factory
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Fieldset, Div
-from .models import Product, ProductImage, Category
+from .models import Product, ProductImage, Category, Inventory
 from .widgets import CustomClearableFileInput
 
 
@@ -45,24 +45,28 @@ class ProductImageForm(forms.ModelForm):
         self.helper.form_tag = False  # So crispy doesn't wrap it in another <form> tag
 
 
-# class InventoryForm(forms.ModelForm):
-#     class Meta:
-#         model = Inventory
-#         fields = ['size', 'quantity']
+class InventoryForm(forms.ModelForm):
+    class Meta:
+        model = Inventory
+        fields = ['size', 'quantity']
 
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         self.helper = FormHelper()
-#         self.helper.form_class = 'form-horizontal'
-#         self.helper.label_class = 'col-md-4'
-#         self.helper.field_class = 'col-md-8'
-#         self.helper.add_input(Submit('submit', 'Submit', css_class='btn btn-primary'))
 
+class InventoryUpdateForm(forms.ModelForm):
+    """ Form to update inventory quantities. """
+    class Meta:
+        model = Inventory
+        fields = ['size', 'quantity']
+
+    def __init__(self, *args, **kwargs):
+        # Check if we are updating existing inventory; if so, pre-populate the form
+        product = kwargs.get('initial', {}).get('product')  # Get the product if it's passed in
+        super().__init__(*args, **kwargs)
+        if product:
+            self.fields['size'].queryset = Inventory.objects.filter(product=product).values_list('size', flat=True).distinct()
+            # Set a default value for size if available
+            self.fields['quantity'].initial = 1  # Set default quantity to 1
 
 ProductImageFormSet = inlineformset_factory(
     Product, ProductImage, form=ProductImageForm, extra=3, can_delete=True
 )
 
-# InventoryFormSet = inlineformset_factory(
-#     Product, Inventory, form=InventoryForm, extra=1, can_delete=True
-# )

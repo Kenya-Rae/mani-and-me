@@ -1,17 +1,15 @@
 from django.contrib import admin
-from .models import Product, Category, ProductImage
+from .models import Product, Category, ProductImage, Inventory
 
 # Admin classes to customise admin view
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
     extra = 1  
 
-# class InventoryInline(admin.TabularInline):
-#     """ Inline for managing product inventory """
-#     model = Inventory
-#     extra = 1  # Allow adding inventory entries directly
-#     fields = ('size', 'quantity') 
-#     readonly_fields = ('size',)  # Keep 'size' non-editable 
+class InventoryInline(admin.TabularInline):
+    """Allows editing inventory directly within the Product admin."""
+    model = Inventory
+    extra = 1  # Allows adding extra inventory items
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = (
@@ -27,6 +25,7 @@ class ProductAdmin(admin.ModelAdmin):
     ordering = ('sku',)
     list_filter = ('category', 'has_sizes')
     search_fields = ('name', 'sku', 'description')
+    inlines = [InventoryInline]  # Display Inventory inside Product admin
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = (
@@ -37,4 +36,4 @@ class CategoryAdmin(admin.ModelAdmin):
 # Register models with the admin site
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Category, CategoryAdmin)
-# admin.site.register(Inventory)
+admin.site.register(Inventory)

@@ -14,24 +14,28 @@
     <h2>Manage Inventory</h2>
 
     {% for product in products %}
-        <div class="product-inventory mb-4 p-3 border rounded">
-            <h3>{{ product.name }}</h3>
-            <p><strong>Price:</strong> £{{ product.price }}</p>
+    <div class="product-inventory mb-4 p-3 border rounded">
+        <h3>{{ product.name }}</h3>
+        <p><strong>Price:</strong> £{{ product.price }}</p>
 
-            {% if product.has_sizes %}
-                <h4>Sizes and Stock</h4>
-                <ul>
-                    {% for inventory in product.inventory.all %}
-                        <li>
-                            <strong>Size:</strong> {{ inventory.size }} | 
-                            <strong>Quantity:</strong> {{ inventory.quantity }}
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p>No sizes available for this product.</p>
-            {% endif %}
-        </div>
-    {% endfor %}
+        {% if product.has_sizes %}
+            <h4>Sizes and Stock</h4>
+            <ul>
+                {% for inventory in product.inventory.all %}
+                    <li>
+                        <strong>Size:</strong> {{ inventory.size }} | 
+                        <strong>Quantity:</strong> {{ inventory.quantity }}
+                        <a href="{% url 'update_inventory' product.id %}" class="btn btn-sm btn-warning">Update</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Stock: {{ product.inventory.first.quantity }}</p>
+            <a href="{% url 'update_inventory' product.id %}" class="btn btn-sm btn-warning">Update Stock</a>
+        {% endif %}
+        
+    </div>
+{% endfor %}
+
 </div>
 {% endblock %}

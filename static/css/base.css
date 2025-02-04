@@ -155,8 +155,8 @@ a.btn.btn-sm.float-left.go-back {
 
 .product-bar {
   display: inline-block;
-  animation: scroll-left 10s linear infinite; /* Adjust speed here */
-  background-color: #330b26e3;
+  animation: scroll-left 40s linear infinite; /* Adjust speed here */
+  background-color: #330b26a2;
 }
 
 .product-item {

@@ -147,21 +147,24 @@ class StripeWH_Handler:
                             )
                             order_line_item.save()
 
-                # Adjust the inventory for each line item
+                # Adjust the stock for each ordered item
                 for line_item in order.lineitems.all():
                     product = line_item.product
-                    size = line_item.product_size
+                    size = line_item.product_size  # Check if the product has a size
                     quantity = line_item.quantity
 
                     # Get the matching inventory item
-                    inventory_item = Inventory.objects.filter(product=product, size=size).first() if size else Inventory.objects.filter(product=product).first()
+                    inventory_item = Inventory.objects.filter(product=product, size=size).first()
 
                     if inventory_item:
-                        inventory_item.quantity -= quantity
-                        inventory_item.save()
+                        if inventory_item.quantity >= quantity:  # Ensure stock doesn't go negative
+                            inventory_item.quantity -= quantity
+                            inventory_item.save()
+                        else:
+                            print(f"Warning: Not enough stock for {product.name} (Size: {size})")
                     else:
-                        # Optionally handle missing inventory, e.g., log it or send a warning
-                        print(f"Warning: No inventory found for product {product.name} and size {size}")
+                        print(f"Warning: No inventory found for {product.name} (Size: {size})")
+
 
             except Exception as e:
                 if order:

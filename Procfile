@@ -1,0 +1,1 @@
+web: gunicorn mani_and_me.wsgi:application

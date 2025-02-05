@@ -532,7 +532,7 @@ input[name="q"]::placeholder {
   }
 
   .go-back {
-    margin: 5px 0px 0px -5px;
+    margin: 5px 0px 0px -5px !important;
   }
 }
 

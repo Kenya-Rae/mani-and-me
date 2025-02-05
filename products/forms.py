@@ -1,11 +1,14 @@
 from django import forms
 from django.forms.models import inlineformset_factory
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
+from crispy_forms.layout import Layout, Submit, Fieldset, Div
 from .models import Product, ProductImage, Category, Inventory
 from .widgets import CustomClearableFileInput
 
 
+from django import forms
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit
 from .models import Product, Category
 from .widgets import CustomClearableFileInput
 
@@ -26,9 +29,7 @@ class ProductForm(forms.ModelForm):
         cleaned_data = super().clean()
         # Any specific validation for the images
         image_fields = ['image', 'image_2', 'image_3']
-        uploaded_images = sum(
-            [1 for field in image_fields if cleaned_data.get(field)]
-            )
+        uploaded_images = sum([1 for field in image_fields if cleaned_data.get(field)])
 
         # Check if the user uploads more than 3 images
         if uploaded_images > 3:
@@ -67,7 +68,6 @@ class ProductImageForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
-        # Don't wrap the form in another <form> tag
         self.helper.form_tag = False
 
 
@@ -84,13 +84,11 @@ class InventoryUpdateForm(forms.ModelForm):
         fields = ['size', 'quantity']
 
     def __init__(self, *args, **kwargs):
-        # Check if we are updating existing inventory;
-        # if so, pre-populate the form
+        # Check if we are updating existing inventory; if so, pre-populate the form
         product = kwargs.get('initial', {}).get('product')
         super().__init__(*args, **kwargs)
         if product:
-            self.fields['size'].queryset = Inventory.objects.filter(
-                product=product).values_list('size', flat=True).distinct()
+            self.fields['size'].queryset = Inventory.objects.filter(product=product).values_list('size', flat=True).distinct()
             # Set a default value for size if available
             self.fields['quantity'].initial = 1  # Set default quantity to 1
 

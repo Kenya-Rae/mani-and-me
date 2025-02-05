@@ -20,7 +20,8 @@ Mani & Me is site that sells beautifully printed gifts for all. A heart-filled b
 
 ### Features
 
-- [Future Features](#future-feautres)
+- [Current Features](#current-features)
+- [Future Features](#future-features)
 
 ### Testing
 
@@ -43,8 +44,6 @@ Mani & Me is site that sells beautifully printed gifts for all. A heart-filled b
 
 This project's goal is to build a full-stack site that allows your users to browse and find products. As well as place orders and pay on the site. I would like to make this the base of the site that I will be gifting to a relative that has recently started up a small business.
 
-#### Recruiters Goals
-
 #### User Goals:
 
 - Easily find products via search or browsing the site.
@@ -55,7 +54,7 @@ This project's goal is to build a full-stack site that allows your users to brow
 
 #### Developers goals:
 
-- Create a functional site for a relative who has started up a business recently..
+- Create a functional site for a relative who has started up a business recently.
 - Demonstrate the use of full-stack development in its entirety.
 - Make a site that allows users to find products and place orders.
 - Make a compelling site that can be used by superusers and customers.
@@ -89,6 +88,9 @@ As the site owner I want:
 - Manage product categories and subcategories to organize my store effectively, allowing customers to navigate easily
 - Demonstrate what I have learnt with Python and external libiraries.
 - A site that functions and is consistent with handling data. As well as accepts payments and send email confirmations.
+- Navigation bar that alllows users to access different parts of the sites.
+- Sign up, login and logout feature to allow a user to sign up. They can logout of the session when they are finished using the site.
+- Dashboard, for users to view their past orders and edit/update shipping information.
 
 ## Design Choices
 
@@ -152,11 +154,14 @@ The current features on the site are to ensure that users have a positve experie
 
 ### Future Features
 
-- Navigation bar that alllows users to access different parts of the sites.
-- Search box, allows users to find what they are looking for within the site.
-- Sign up, login and logout feature to allow a user to sign up. They can logout of the session when they are finished using the site.(Superusers to have site control)
-- Add, edit and delete products on the site as a superuser.
-- Dashboard, for users to view their past orders and edit/update shipping information.
+As I hope to make this a live site for a relative. There are a few things that I will like to implent/change after this course is complete.
+
+- I would like to implent rating after purchased products. Where a email will be sent to review the product a week or few days after purchase/delivery date.
+- As well as this, when logging/signing up I would like to add social media accounts eventually.
+- Within the future of my relative business, i would like to incorporate a trust pilot rating type of functionality. So any new users can see the business is trust worthy and worth using.
+- Going on from my last point, once the business starts to grow. I think the site will need to have Frequently Asked Questions section.
+- Potentially add a live chat system for people that need to contact in.
+- I would like to implent a personalised page/section to enable users to add what they would like to customise on their product. Without having to contact in after purchase.
 - Tracking on deliveries for users. As well as different types of shipping.
 - It would also be beneficial to add different payment options to the site instead of just card payments.
 - Sales data/ customer insight pages/reports to understand trends and making improvements to marketing decisions.
@@ -225,17 +230,6 @@ When you first load on the page you are met with the homepage.
 <br>
 <IMG src="readme/pages/crud_delete_1.png"  alt="Delete functionality Success"/>
 </details>
-
-## Future Features
-
-As I hope to make this a live site for a relative. There are a few things that I will like to implent/change after this course is complete.
-
-- I would like to implent rating after purchased products. Where a email will be sent to review the product a week or few days after purchase/delivery date.
-- As well as this, when logging/signing up I would like to add social media accounts eventually.
-- Within the future of my relative business, i would like to incorporate a trust pilot rating type of functionality. So any new users can see the business is trust worthy and worth using.
-- Going on from my last point, once the business starts to grow. I think the site will need to have Frequently Asked Questions.
-- Potentially add a live chat system for people that need to contact in.
-- Finally I would like to implent a personalised page/section to enable users to add what they would like to customise on their product. Without having to contact in after purchase.
 
 ## Accessibility
 
@@ -399,9 +393,8 @@ To deploy to Heroku, follow the steps below;
 10. Search for your repository and click Connect.
 11. You can click "Enable Automatic Deploys" in case of any further changes to the project. This will push over when you make the push to GitHub.
 12. If you are using the Manual deploy section and click Deploy Branch. This will start the build process.
-13. Once this is completed. Navigate to the top of the page to the “More” button and select “Run console”.
     <br> <strong>Note: If any changes are made to models you will need to manually make the migrations within Heroku.</strong>
-14. The app should running now, click the “Open app” button.
+13. The app should running now, click the “Open app” button.
     <br> <strong>Note: The deployed app will load, but as the new database is empty you will need to add in some data.</strong>
 
 ## Credits

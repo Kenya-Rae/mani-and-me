@@ -28,7 +28,9 @@ SECRET_KEY = os.environ.get('SECRET_KEY', '')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = 'DEVELOPMENT' in os.environ
 
-ALLOWED_HOSTS = ['8000-kenyarae-maniandme-b8erhd4dxvy.ws.codeinstitute-ide.net','localhost','mani-and-me-3a77440a82f2.herokuapp.com', '.herokuapp.com']
+ALLOWED_HOSTS = [
+    '8000-kenyarae-maniandme-b8erhd4dxvy.ws.codeinstitute-ide.net',
+    'localhost', 'mani-and-me-3a77440a82f2.herokuapp.com', '.herokuapp.com']
 
 
 # Application definition
@@ -43,7 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'allauth',
     'allauth.account',
-    'allauth.socialaccount', # Optional -- requires install using `django-allauth[socialaccount]`.
+    'allauth.socialaccount',
     'home',
     'products',
     'bag',
@@ -82,11 +84,13 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
-                'django.template.context_processors.request', # required by allauth.
+                # required by allauth.
+                'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
-                'bag.contexts.bag_contents' # Access the shopping bag
+                # Access the shopping bag
+                'bag.contexts.bag_contents'
             ],
             'builtins': [
                 'crispy_forms.templatetags.crispy_forms_tags',
@@ -183,7 +187,7 @@ if 'USE_AWS' in os.environ:
         'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
         'CacheControl': 'max-age=94608000',
     }
-    
+
     # Bucket configuration
     AWS_STORAGE_BUCKET_NAME = 'mani-and-me'
     AWS_S3_REGION_NAME = 'eu-north-1'

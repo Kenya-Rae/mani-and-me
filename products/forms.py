@@ -1,35 +1,39 @@
 from django import forms
 from django.forms.models import inlineformset_factory
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Fieldset, Div
+from crispy_forms.layout import Submit
 from .models import Product, ProductImage, Category, Inventory
 from .widgets import CustomClearableFileInput
 
 
-from django import forms
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
 from .models import Product, Category
 from .widgets import CustomClearableFileInput
+
 
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = '__all__'
 
-    image = forms.ImageField(label='Main Image', required=False, widget=CustomClearableFileInput)
-    image_2 = forms.ImageField(label='Additional Image 2', required=False, widget=CustomClearableFileInput)
-    image_3 = forms.ImageField(label='Additional Image 3', required=False, widget=CustomClearableFileInput)
+    image = forms.ImageField(label='Main Image', required=False,
+                             widget=CustomClearableFileInput)
+    image_2 = forms.ImageField(label='Additional Image 2', required=False,
+                               widget=CustomClearableFileInput)
+    image_3 = forms.ImageField(label='Additional Image 3', required=False,
+                               widget=CustomClearableFileInput)
 
     def clean(self):
         cleaned_data = super().clean()
         # Any specific validation for the images
         image_fields = ['image', 'image_2', 'image_3']
-        uploaded_images = sum([1 for field in image_fields if cleaned_data.get(field)])
+        uploaded_images = sum(
+            [1 for field in image_fields if cleaned_data.get(field)]
+            )
 
         # Check if the user uploads more than 3 images
         if uploaded_images > 3:
-            raise forms.ValidationError('You can only upload a maximum of 3 images.')
+            raise forms.ValidationError(
+                'You can only upload a maximum of 3 images.')
 
         return cleaned_data
 
@@ -53,7 +57,8 @@ class ProductForm(forms.ModelForm):
 
 class ProductImageForm(forms.ModelForm):
     # This form will handle both the main image and additional images
-    image = forms.ImageField(label='Image', required=False, widget=CustomClearableFileInput)
+    image = forms.ImageField(label='Image', required=False,
+                             widget=CustomClearableFileInput)
 
     class Meta:
         model = ProductImage
@@ -62,7 +67,8 @@ class ProductImageForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_tag = False  # Don't wrap the form in another <form> tag
+        # Don't wrap the form in another <form> tag
+        self.helper.form_tag = False
 
 
 class InventoryForm(forms.ModelForm):
@@ -78,13 +84,16 @@ class InventoryUpdateForm(forms.ModelForm):
         fields = ['size', 'quantity']
 
     def __init__(self, *args, **kwargs):
-        # Check if we are updating existing inventory; if so, pre-populate the form
-        product = kwargs.get('initial', {}).get('product')  # Get the product if it's passed in
+        # Check if we are updating existing inventory;
+        # if so, pre-populate the form
+        product = kwargs.get('initial', {}).get('product')
         super().__init__(*args, **kwargs)
         if product:
-            self.fields['size'].queryset = Inventory.objects.filter(product=product).values_list('size', flat=True).distinct()
+            self.fields['size'].queryset = Inventory.objects.filter(
+                product=product).values_list('size', flat=True).distinct()
             # Set a default value for size if available
             self.fields['quantity'].initial = 1  # Set default quantity to 1
+
 
 ProductImageFormSet = inlineformset_factory(
     Product, ProductImage, form=ProductImageForm, extra=3, can_delete=True

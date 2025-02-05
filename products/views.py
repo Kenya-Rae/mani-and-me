@@ -10,9 +10,13 @@ from django.http import JsonResponse
 from django.forms.models import inlineformset_factory
 from django.forms import modelformset_factory
 from .models import Product, Category, Inventory
-from .forms import ProductImage, ProductForm, ProductImageFormSet, ProductImageForm, InventoryForm, InventoryUpdateForm
+from .forms import (
+    ProductImage, ProductForm, ProductImageFormSet,
+    InventoryForm, InventoryUpdateForm
+)
 
 # Create your views here.
+
 
 def all_products(request):
     """ View to show products, including filtering and queries -
@@ -25,7 +29,7 @@ def all_products(request):
     direction = None
     view = 'grid'  # Default view
 
-    # Handle (Grid or List) view toggle 
+    # Handle (Grid or List) view toggle
     if 'view' in request.GET:
         view = request.GET['view']
 
@@ -61,8 +65,9 @@ def all_products(request):
             if not query:
                 messages.error(request, "Please enter a search criteria!")
                 return redirect(reverse('products'))
-            
-            queries = Q(name__icontains=query) | Q(description__icontains=query)
+
+            queries = Q(name__icontains=query) | Q(
+                description__icontains=query)
             products = products.filter(queries)
 
     # Determine current sorting state
@@ -80,7 +85,7 @@ def all_products(request):
 
 
 def product_info(request, product_id):
-    """ View to show product information and inventory 
+    """ View to show product information and inventory
     - Code used from Boutique Ado (Adapted)"""
 
     product = get_object_or_404(Product, pk=product_id)
@@ -91,7 +96,7 @@ def product_info(request, product_id):
         'images': images,
     }
 
-    return render (request, 'products/product_info.html', context)
+    return render(request, 'products/product_info.html', context)
 
 
 @login_required
@@ -136,14 +141,18 @@ def add_product(request):
                         size=size,
                         quantity=1  # Default quantity
                     )
-                messages.success(request, 'Successfully added product with sizes and inventory!')
+                messages.success(request,
+                                 'Successfully added product with sizes \
+                                     and inventory!')
             else:
                 messages.success(request, 'Successfully added product!')
 
             # Redirect to the products page or wherever you want
             return redirect('products')
         else:
-            messages.error(request, 'Failed to add product. Please ensure the form is valid.')
+            messages.error(request,
+                           'Failed to add product. \
+                             Please ensure the form is valid.')
 
     else:
         product_form = ProductForm()
@@ -180,12 +189,16 @@ def edit_product(request, product_id):
             messages.success(request, 'Product updated successfully!')
             return redirect(reverse('product_info', args=[product.id]))
         else:
-            messages.error(request, 'Failed to update the product. Please check the form.')
+            messages.error(request,
+                           'Failed to update the product. \
+                            Please check the form.')
 
     else:
         form = ProductForm(instance=product)
 
-    return render(request, 'products/edit_product.html', {'form': form, 'product': product})
+    return render(request,
+                  'products/edit_product.html',
+                  {'form': form, 'product': product})
 
 
 @login_required
@@ -209,7 +222,8 @@ def manage_inventory(request):
         return redirect(reverse('home'))
 
     products = Product.objects.prefetch_related('inventory').all()
-    return render(request, 'products/manage_inventory.html', {'products': products})
+    return render(request,
+                  'products/manage_inventory.html', {'products': products})
 
 
 @login_required
@@ -228,7 +242,8 @@ def update_inventory(request, product_id):
             size = form.cleaned_data.get('size')
             quantity = form.cleaned_data.get('quantity')
 
-            existing_inventory = Inventory.objects.filter(product=product, size=size).first()
+            existing_inventory = Inventory.objects.filter(
+                product=product, size=size).first()
 
             if existing_inventory:
                 # If size exists, check if the quantity is valid
@@ -237,13 +252,15 @@ def update_inventory(request, product_id):
                 else:
                     existing_inventory.quantity = quantity
                     existing_inventory.save()
-                    messages.success(request, f"Updated stock for size {size}.")
+                    messages.success(request,
+                                     f"Updated stock for size {size}.")
             else:
                 # Add new size only if it's not already there
                 if quantity < 0:
                     messages.error(request, "Quantity cannot be negative.")
                 else:
-                    Inventory.objects.create(product=product, size=size, quantity=quantity)
+                    Inventory.objects.create(
+                        product=product, size=size, quantity=quantity)
                     messages.success(request, f"Added new size {size}.")
 
             return redirect('manage_inventory')
@@ -253,9 +270,13 @@ def update_inventory(request, product_id):
         form = InventoryUpdateForm(
             initial={
                 'product': product,
-                'size': inventory_item.size if inventory_item else 'M',  # Default to 'M' if no inventory exists
-                'quantity': inventory_item.quantity if inventory_item else 1,  # Default to 1 if no inventory exists
+                # Default to 'M' if no inventory exists
+                'size': inventory_item.size if inventory_item else 'M',
+                # Default to 1 if no inventory exists
+                'quantity': inventory_item.quantity if inventory_item else 1,
             }
         )
 
-    return render(request, 'products/update_inventory.html', {'form': form, 'product': product})
+    return render(request,
+                  'products/update_inventory.html',
+                  {'form': form, 'product': product})

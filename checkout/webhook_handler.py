@@ -4,20 +4,21 @@ from django.template.loader import render_to_string
 from django.conf import settings
 
 from .models import Order, OrderLineItem
-from products.models import Product
+from products.models import Product, Inventory
 from profiles.models import UserProfile
 
 import stripe
 import json
 import time
 
+
 class StripeWH_Handler:
-    """Handle Stripe webhooks 
+    """Handle Stripe webhooks
         - Code from Boutique Ado """
 
     def __init__(self, request):
         self.request = request
-    
+
     def _send_confirmation_email(self, order):
         """Send the user a confirmation email"""
         cust_email = order.email
@@ -27,7 +28,7 @@ class StripeWH_Handler:
         body = render_to_string(
             'checkout/confirmation_emails/confirmation_email_body.txt',
             {'order': order, 'contact_email': settings.DEFAULT_FROM_EMAIL})
-        
+
         send_mail(
             subject,
             body,
@@ -43,7 +44,7 @@ class StripeWH_Handler:
         return HttpResponse(
             content=f'Unhandled Webhook received: {event["type"]}',
             status=200)
-    
+
     def handle_payment_intent_succeeded(self, event):
         """
         Handle the payment_intent.succeeded webhook from Stripe
@@ -102,11 +103,13 @@ class StripeWH_Handler:
             except Order.DoesNotExist:
                 attempt += 1
                 time.sleep(1)
-        
+
         if order_exists:
             self._send_confirmation_email(order)
             return HttpResponse(
-                content=f'Webhook received: {event["type"]} | SUCCESS: Verified order already in database',
+                content=f'\
+                    Webhook received: {event["type"]} | \
+                        SUCCESS: Verified order already in database',
                 status=200)
         else:
             order = None
@@ -126,7 +129,7 @@ class StripeWH_Handler:
                     original_bag=bag,
                     stripe_pid=pid,
                 )
-                
+
                 # Loop through the items in the bag and create OrderLineItems
                 for item_id, item_data in json.loads(bag).items():
                     product = Product.objects.get(id=item_id)
@@ -150,21 +153,29 @@ class StripeWH_Handler:
                 # Adjust the stock for each ordered item
                 for line_item in order.lineitems.all():
                     product = line_item.product
-                    size = line_item.product_size  # Check if the product has a size
+                    # Check if the product has a size
+                    size = line_item.product_size
                     quantity = line_item.quantity
 
                     # Get the matching inventory item
-                    inventory_item = Inventory.objects.filter(product=product, size=size).first()
+                    inventory_item = Inventory.objects.filter(
+                        product=product, size=size).first()
 
                     if inventory_item:
-                        if inventory_item.quantity >= quantity:  # Ensure stock doesn't go negative
+                        # Ensure stock doesn't go negative
+                        if inventory_item.quantity >= quantity:
                             inventory_item.quantity -= quantity
                             inventory_item.save()
                         else:
-                            print(f"Warning: Not enough stock for {product.name} (Size: {size})")
+                            print(f"\
+                                Warning: \
+                                    Not enough stock for \
+                                        {product.name} (Size: {size})")
                     else:
-                        print(f"Warning: No inventory found for {product.name} (Size: {size})")
-
+                        print(f"\
+                            Warning: \
+                                No inventory found for \
+                                    {product.name} (Size: {size})")
 
             except Exception as e:
                 if order:
@@ -175,7 +186,9 @@ class StripeWH_Handler:
 
             self._send_confirmation_email(order)
             return HttpResponse(
-                content=f'Webhook received: {event["type"]} | SUCCESS: Created order in webhook',
+                content=f'\
+                    Webhook received: {event["type"]} | \
+                        SUCCESS: Created order in webhook',
                 status=200)
 
     def handle_payment_intent_payment_failed(self, event):

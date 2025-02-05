@@ -5,6 +5,8 @@ from products.models import Product
 from .models import Wishlist
 
 # Create your views here.
+
+
 @login_required
 def add_to_wishlist(request, product_id):
     """ Add product to the wishlist """
@@ -21,14 +23,16 @@ def add_to_wishlist(request, product_id):
 def remove_from_wishlist(request, product_id):
     """ Remove product from the wishlist """
     product = get_object_or_404(Product, pk=product_id)
-    wishlist_item = Wishlist.objects.filter(user=request.user, product=product).first()
-    
+    wishlist_item = Wishlist.objects.filter(
+        user=request.user, product=product).first()
+
     if wishlist_item:
         wishlist_item.delete()
-        messages.success(request, f"{product.name} removed from your wishlist.")
+        messages.success(request,
+                         f"{product.name} removed from your wishlist.")
     else:
         messages.error(request, f"{product.name} not found in your wishlist.")
-        
+
     return redirect('products')
 
 

@@ -493,7 +493,7 @@ input[name="q"]::placeholder {
   }
 
   .nav-link {
-    padding: 0.15rem;
+    padding: 1px;
   }
 
   .nav-link i.fa-lg {

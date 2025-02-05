@@ -6,13 +6,6 @@ from .models import Product, ProductImage, Category, Inventory
 from .widgets import CustomClearableFileInput
 
 
-from django import forms
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
-from .models import Product, Category
-from .widgets import CustomClearableFileInput
-
-
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product

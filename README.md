@@ -295,13 +295,14 @@ W3c was used to validate HTML, CSS. JShint was used for JavaScript code.
 ### HTML Validator:
 
 <details>
-<summary>HTML Validator Overview Part 1</summary>
-<IMG src="readme/validation/html-validators.png"  alt="HTML Validator Overview Part 1"/>
+<summary>HTML Validator Overview</summary>
+<IMG src="readme/validation/html-validators.png"  alt="HTML Validator Overview"/>
 </details>
 <br>
 <details>
-<summary>HTML Validator </summary>
-<IMG src=""  alt="HTML Validator"/>
+<summary>HTML Validator - After Changes</summary>
+<IMG src="readme/validation/html-validators-changed.png"  alt="HTML Validator"/>
+- The error within the screenshot is due to the base template there is a duplicate ID, as this code was used twice for mobile view and one for larger screens. 
 </details>
 
 <br>
@@ -331,8 +332,8 @@ W3c was used to validate HTML, CSS. JShint was used for JavaScript code.
 
 <br>
   <details>
-  <summary>Console Message</summary>
-  <IMG src=""  alt="Console message"/>
+  <summary>Current Console Message</summary>
+  <IMG src="readme/validation/console-message.png"  alt="Console message"/>
 
 </details>
 
@@ -344,7 +345,8 @@ W3c was used to validate HTML, CSS. JShint was used for JavaScript code.
 - Order history was unable to be view when clicked due to no import of the order model.
 - Product management form displayed a 'BoundWidget' object has no attribute 'field' error. As I was trying to access the fields directly in the template in an invalid manner. I have removed the field from the form and tried {{ product_form|crispy }} instead.
 - When deleting products in the admin view, a page 404 error would display on the site. Making the site unusable, this was due to the products being deleted where still in the session ID.
-- Django countries version was newer than the django version I was using, this caused issue in deployment as django countries had some incompatibilities. To over come this, I had to install the LTS version Django. Version 4.2 in particular.
+- Due to migrating to VScode mid project there were numerous amounts of issue on VScode, from stripe elements, edit function, terminal commands to project missing files and not running. I decided to work as much as possible on the original workspace I was using, Gitpod. This resolved alot of issue for me and I was able to continue and finish the project within the given time. I had manually make the merge for the changes I made when trying to code on VScode.
+- Django countries version was newer than the django version I was using, this caused issue in deployment as django countries had some incompatibilities. To over come this, I had to install the LTS version Django. Version 4.2 in particular. I have a runtime.txt to ensure the version of Python 3.12 was used in this project.
 - Favicon 404 error due to not accessing it through {% static 'path here' %}.
 - Server 500 error that was related to my custom-clearable-widget template was not being accessed correctly. Due to making my project complient with Flake8, I had broken the line where this template was being accessed. I undone the change to the file and everything was able to be accessed and used correctly.
 

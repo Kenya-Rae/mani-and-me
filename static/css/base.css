@@ -425,8 +425,9 @@ input[name="q"]::placeholder {
 }
 
 .allauth-form-inner-content a {
-  /* Code from Boutique Ado */
-  color: #17a2b8; /* text-info */
+  /* Code from Boutique Ado
+   - changed colour for accessiblity */
+  color: #a11c75; /* text-info */
 }
 
 /* Product Form */

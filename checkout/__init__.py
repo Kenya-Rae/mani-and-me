@@ -1,1 +1,1 @@
-default_app_config = 'checkout.apps.CheckoutConfig' # for signals to work 
+default_app_config = 'checkout.apps.CheckoutConfig' # for signals to work

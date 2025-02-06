@@ -5,7 +5,7 @@
 [Live Project can be viewed here.](https://mani-and-me-3a77440a82f2.herokuapp.com/)
 ![Logo](static/favicon.ico)
 
-Mani & Me is site that sells beautifully printed gifts for all. A heart-filled business that celebrates creativity, family, and the joy of personalisation.
+Mani & Me is a site that sells beautifully printed gifts for all: a heart-filled business that celebrates creativity, family, and the joy of personalisation.
 
 ## Table of Contents
 
@@ -27,6 +27,7 @@ Mani & Me is site that sells beautifully printed gifts for all. A heart-filled b
 
 - [Manual Testing](#manual-testing)
 - [Bugs](#bugs)
+- [Validators and Lighthouse](#validators-and-lighthouse)
 
 ### Deployment
 
@@ -42,7 +43,7 @@ Mani & Me is site that sells beautifully printed gifts for all. A heart-filled b
 
 ### Project Goals
 
-This project's goal is to build a full-stack site that allows your users to browse and find products. As well as place orders and pay on the site. I would like to make this the base of the site that I will be gifting to a relative that has recently started up a small business.
+This project's goal is to build a full-stack site that allows your users to browse and find products. As well as place orders and pay on the site. I would like to make this the base of the site that I will be gifting to a relative who has recently started up a small business.
 
 #### User Goals:
 
@@ -65,9 +66,9 @@ As a user I want:
 
 - To search for products.
 - View individual product details
-- Ability to view total of shopping at any moment.
+- Ability to view the total of shopping at any moment.
 - Able to filter products.
-- Easilt create an account and login.
+- Easily create an account and log in.
 - Easy navigation.
 - Able to place an order and pay online.
 - Securely enter my payment information
@@ -86,15 +87,15 @@ As the site owner I want:
 - A structured and PEP8 compliant.
 - Easily add, edit and delete products on the online store.
 - Manage product categories and subcategories to organize my store effectively, allowing customers to navigate easily
-- Demonstrate what I have learnt with Python and external libiraries.
-- A site that functions and is consistent with handling data. As well as accepts payments and send email confirmations.
-- Navigation bar that alllows users to access different parts of the sites.
-- Sign up, login and logout feature to allow a user to sign up. They can logout of the session when they are finished using the site.
+- Demonstrate what I have learnt with Python and external libraries.
+- A site that functions and is consistent with handling data. As well as accept payments and send email confirmations.
+- Navigation bar that allows users to access different parts of the sites.
+- Sign up, login and logout feature to allow a user to sign up. They can log out of the session when they are finished using the site.
 - Dashboard, for users to view their past orders and edit/update shipping information.
 
 ## Design Choices
 
-### Main Technologies, Languages, Libaries and APIs Used
+### Main Technologies, Languages, Libraries and APIs Used
 
 - HTML
 - CSS
@@ -105,16 +106,16 @@ As the site owner I want:
 
 ### Fonts
 
-- Playfair Display was used through the site from google fonts.
+- Playfair Display was used through the site from Google Fonts.
 
 ### Icons
 
-- Font Awesome has been used through out the project to provide easily identifiable icons to help users navigate through the site.
-- Favicon was also use to create the tab icon for the browser. I had already had a previous logo so i had converted this via the favicon website to use.
+- Font Awesome has been used throughout the project to provide easily identifiable icons to help users navigate through the site.
+- Favicon was also used to create the tab icon for the browser. I had already had a previous logo so I had converted this via the favicon website to use.
 
 ### Colours
 
-- Coolors was used to generate random colours that could be used in my site for buttons, background and borders.
+- Coolors were used to generate random colours that could be used in my site for buttons, background and borders.
 
 ### Images
 
@@ -138,38 +139,48 @@ Wireframes were created using [Balsamiq](https://balsamiq.com/).
 - [Product Management](/readme/wireframes/product-management.png)
 - [Inventory Management](/readme/wireframes/inventory-management.png)
 
+## Schema
+
+The schema overview for my Django application:
+
+<details>
+<summary>Schema</summary>
+<IMG src="readme/wireframes/schema.jpg"  alt="Schema"/>
+- This schema supports an e-commerce platform where users can make orders, track inventory, categorize products, manage their wishlists, and save shipping preferences in their profiles. The Order and OrderLineItem models manage the transaction details, while the Product and Inventory models handle product catalog and stock management.
+</details>
+
 ## Features
 
 ### Current Features
 
-The current features on the site are to ensure that users have a positve experience and achieve the website goals.
+The current features on the site are to ensure that users have a positive experience and achieve the website goals.
 
-- Easy naviagtion across the whole site, for products and site/profile.
+- Easy navigation across the whole site, for products and site/profile.
 - Responsive design for mobile, tablet and desktop.
-- Grid or list view for easier viewing .
+- Grid or list view for easier viewing.
 - Sort and filtering for products.
 - Contact and about us information.
 - Images along with content.
-- Wishlist, signed in user can create a wishlist and view them.
+- Wishlist, A signed-in user can create a wishlist and view it.
 - Logo and favicon icon.
 - Search functionality.
 - Security/validations.
-- Superusers have the ability to add, edit and delete products from site and admin view.
+- Superusers can add, edit and delete products from the site and admin view.
 
 ### Future Features
 
-As I hope to make this a live site for a relative. There are a few things that I will like to implent/change after this course is complete.
+I hope to make this a live site for a relative. There are a few things that I would like to implement/change after this course is complete.
 
-- I would like to implent rating after purchased products. Where a email will be sent to review the product a week or few days after purchase/delivery date.
+- I would like to implement a rating after purchasing products. Where an email will be sent to review the product a week or a few days after the purchase/delivery date.
 - As well as this, when logging/signing up I would like to add social media accounts eventually.
-- Within the future of my relative business, i would like to incorporate a trust pilot rating type of functionality. So any new users can see the business is trust worthy and worth using.
-- Going on from my last point, once the business starts to grow. I think the site will need to have Frequently Asked Questions section.
-- Potentially add a live chat system for people that need to contact in.
-- I would like to implent a personalised page/section to enable users to add what they would like to customise on their product. Without having to contact in after purchase.
+- Within the future of my relative business, I would like to incorporate a trust pilot rating type of functionality. So any new users can see the business is trustworthy and worth using.
+- Going on from my last point, once the business starts to grow. I think the site will need to have a Frequently Asked Questions section.
+- Potentially add a live chat system for people who need to contact in.
+- I would like to implement a personalised page/section to enable users to add what they would like to customise on their product. Without having to contact in after purchase.
 - Tracking on deliveries for users. As well as different types of shipping.
 - It would also be beneficial to add different payment options to the site instead of just card payments.
-- Sales data/ customer insight pages/reports to understand trends and making improvements to marketing decisions.
-- In the near future I would like to develope the profile section more, allowing settings, delete profile functionality.
+- Sales data/ customer insight pages/reports to understand trends and make improvements to marketing decisions.
+- Shortly I would like to develop the profile section more, allowing settings, and delete profile functionality.
 - Add more security to the site overall once(if) this site becomes a used one.
 
 ### Loaded page:
@@ -178,177 +189,185 @@ When you first load on the page you are met with the homepage.
 
 <details>
 <summary>User Interface</summary>
-<IMG src="readme/pages/user_interface.png"  alt="User Interface"/>
+<IMG src="readme/pages/user_interface.png"  alt="User Interface"/>
 </details>
 
 ### Navigation:
 
 <details>
 <summary>Navigation</summary>
-<IMG src="readme/pages/nav_1.png"  alt="Navigation"/>
-<IMG src="readme/pages/nav_2.png"  alt="Main Navigation"/>
+<IMG src="readme/pages/nav_1.png"  alt="Navigation"/>
+<IMG src="readme/pages/nav_2.png"  alt="Main Navigation"/>
 </details>
 
 ### Product Page:
 
 <details>
 <summary>Product Infomation</summary>
-<IMG src="readme/pages/product_info.png"  alt="Product Details"/>
+<IMG src="readme/pages/product_info.png"  alt="Product Details"/>
 </details>
 
 ### Checkout Page:
 
 <details>
 <summary>Checkout Bag</summary>
-<IMG src="readme/pages/bag_page.png"  alt="Checkout Bag"/>
+<IMG src="readme/pages/bag_page.png"  alt="Checkout Bag"/>
 </details>
 
 <details>
 <summary>Checkout Order</summary>
-<IMG src="readme/pages/checkout_order.png"  alt="Checkout Order"/>
+<IMG src="readme/pages/checkout_order.png"  alt="Checkout Order"/>
 </details>
 
 <details>
 <summary>Checkout Sucess</summary>
-<IMG src="readme/pages/checkout-successed.png"  alt="Order Successful"/>
+<IMG src="readme/pages/checkout-successed.png"  alt="Order Successful"/>
 </details>
 
 ### CRUD Functionality:
 
 <details>
 <summary>Create</summary>
-<IMG src="readme/pages/crud_add.png"  alt="Create functionality"/>
+<IMG src="readme/pages/crud_add.png"  alt="Create functionality"/>
 </details>
 
 <details>
 <summary>Read</summary>
-<IMG src="readme/pages/crud_read.png"  alt="Read functionality"/>
+<IMG src="readme/pages/crud_read.png"  alt="Read functionality"/>
 </details>
 
 <details>
 <summary>Update</summary>
-<IMG src="readme/pages/crud_edit.png"  alt="Update functionality"/>
+<IMG src="readme/pages/crud_edit.png"  alt="Update functionality"/>
 </details>
 
 <details>
 <summary>Delete</summary>
-<IMG src="readme/pages/crud_delete_2.png"  alt="Delete functionality"/>
+<IMG src="readme/pages/crud_delete_2.png"  alt="Delete functionality"/>
 <br>
-<IMG src="readme/pages/crud_delete_1.png"  alt="Delete functionality Success"/>
+<IMG src="readme/pages/crud_delete_1.png"  alt="Delete functionality Success"/>
 </details>
 
 ## Accessibility
 
 - Limited bright colours to reduce the contrasts.
-- Added name tags to elements, included alt tags to images.
+- Added name tags to elements, and included alt tags to images.
 
 ## Testing
 
 ### Manual Testing
 
-| What to test        | Expected Results                          | Passed   |
-| ------------------- | ----------------------------------------- | -------- |
-| Navigation Menu     | Navigate through the site correctly.      | &#x2714; |
-| Search for product  | Search function for finding products.     | &#x2714; |
-| View prodcucts      | View products in categories.              | &#x2714; |
-| Sign Up and Login   | Sign up/Login to site as user/superuser.  | &#x2714; |
-| Sorting products    | Sort products by price, rating, category. | &#x2714; |
-| Add products        | Superusers to add products to site.       | &#x2714; |
-| Delete products     | Superusers to delete products from site.  | &#x2714; |
-| Edit products       | Superusers to edit products on site.      | &#x2714; |
-| Upload images       | Superusers to add product images.         | &#x2714; |
-| Shopping bag - Add  | Users can add products to shopping bag.   | &#x2714; |
-| Shopping bag - View | Users can view products in shopping bag.  | &#x2714; |
-| Payment             | Allow payments to be made for orders.     | &#x2714; |
-| Confirmation        | Web/email confirmation of the order.      | &#x2714; |
-| Inventory           | To be able to add stock control.          | &#x2714; |
+| What to test         | Expected Results                                  | Passed   |
+| -------------------- | ------------------------------------------------- | -------- |
+| Navigation Menu      | Navigate through the site correctly.              | &#x2714; |
+| Product Search       | Search function for finding products.             | &#x2714; |
+| View Products        | View products in categories.                      | &#x2714; |
+| Sign Up and Login    | Sign up/log in to the site as a user/superuser.   | &#x2714; |
+| Sorting Products     | Sort products by price, rating, and category.     | &#x2714; |
+| Add Products         | Superusers to add products to the site.           | &#x2714; |
+| Delete Products      | Superusers to delete products from the site.      | &#x2714; |
+| Edit Products        | Superusers to edit products on site.              | &#x2714; |
+| Upload Images        | Superusers to add product images.                 | &#x2714; |
+| Shopping Bag - Add   | Users can add products to shopping bag.           | &#x2714; |
+| Shopping Bag - View  | Users can view products in shopping bag.          | &#x2714; |
+| Payment              | Allow payments to be made for orders.             | &#x2714; |
+| Confirmation         | Web/email confirmation of the order.              | &#x2714; |
+| Inventory            | To be able to add stock control.                  | &#x2714; |
 
-### For this project I have had friends and family, test amongst various devices. Such as;
+### For this project I have had friends and family, test various devices. Such as;
 
-- I had a hand few test the deployed site. There was no overall negative feedback other than a server error that happened when accessing edit/add products. Which was quickly resolved. The feedback given was that the site was easy to use and understand. As i had asked each testers to use the site as a new user, returning user and superuser. Some features/pages stood out more than others, generally a good user experience.
+- I had a hand few testing the deployed site. There was no overall negative feedback other than a server error that happened when accessing edit/add products. Which was quickly resolved. The feedback given was that the site was easy to use and understand. I had asked each tester to use the site as a new user, returning user and superuser. Some features/pages stood out more than others, generally a good user experience.
 
-## The devices that the site was tested on :
+### The devices that the site was tested on :
 
 - iPhone 11 Pro
 - HP Pavillion 17 Laptop
 - iPad 10th Gen
 - iPhone XR
 
+## Validators and Lighthouse
+
+W3c was used to validate HTML and CSS. JShint was used for JavaScript code.
+
 ### Lighthouse - Developer Chrome Tools
 
 <details>
 <summary>Lighthouse Overview</summary>
-<IMG src="readme/validation/lighthouse.png"  alt="Lighthouse Overview Score"/>
+<IMG src="readme/validation/lighthouse.png"  alt="Lighthouse Overview Score"/>
 </details>
 <br>
 
 <details>
 <summary>Lighthouse Acessibility</summary>
-<IMG src=""  alt="Lighthouse Accessibility Score"/>
+<IMG src="readme/validation/lighthouse-access.png"  alt="Lighthouse Accessibility Score"/>
+- Screen reader elements were added for better accessibility.
 </details>
 <br>
-
-## Validators
-
-W3c was used to validate HTML, CSS. JShint was used for JavaScript code.
 
 ### HTML Validator:
 
 <details>
 <summary>HTML Validator Overview</summary>
-<IMG src="readme/validation/html-validators.png"  alt="HTML Validator Overview"/>
+<IMG src="readme/validation/html-validators.png"  alt="HTML Validator Overview"/>
 </details>
 <br>
 <details>
 <summary>HTML Validator - After Changes</summary>
-<IMG src="readme/validation/html-validators-changed.png"  alt="HTML Validator"/>
-- The error within the screenshot is due to the base template there is a duplicate ID, as this code was used twice for mobile view and one for larger screens. 
+<IMG src="readme/validation/html-validators-changed.png"  alt="HTML Validator"/>
+- The error within the screenshot is due to the base template there is a duplicate ID, as this code was used twice for mobile view and once for larger screens. 
 </details>
-
-<br>
 
 ### CSS Validator:
 
-<br>
 <details>
 <summary>CSS Validator </summary>
-<IMG src="readme/validation/css-validator.png"  alt="CSS Validator"/>
+<IMG src="readme/validation/css-validator.png"  alt="CSS Validator"/>
 </details>
 
 ### JavaScript Validator:
 
 <details>
 <summary>JavaScript Validator</summary>
-<IMG src="readme/validation/js-validator-1.png"  alt="JavaScript Validator Results"/>
-<IMG src="readme/validation/js-validator-2.png"  alt="JavaScript Validator Results pt2"/>
-<IMG src="readme/validation/js-validator-3.png"  alt="JavaScript Validator Results pt3"/>
+<IMG src="readme/validation/js-validator-1.png"  alt="JavaScript Validator Results"/>
+<IMG src="readme/validation/js-validator-2.png"  alt="JavaScript Validator Results pt2"/>
+<IMG src="readme/validation/js-validator-3.png"  alt="JavaScript Validator Results pt3"/>
+</details>
+
+### Flake8:
+
+<details>
+<summary>Python Validator </summary>
+<IMG src="readme/validation/flake8-validator-1.png"  alt="Python Validator pt1"/>
+<IMG src="readme/validation/flake8-validator-2.png"  alt="Python Validator pt2"/>
+<IMG src="readme/validation/flake8-validator-3.png"  alt="Python Validator pt3"/>
+- Exlcuding the migrations and the venv as this was due to the VScode migration that i hadnt used. There are view lines left with the longer characters. Due to not knowing how to correctly breakdown the lines without breaking the code. I have chosen to leave them as they are. As well as the imports, some were removed but this was another area I wasn't sure what to take away as I noticed some imports are needed but not being used at the current time.
 </details>
 
 ## Bugs
 
 ### Current Bugs
 
-- Crispy forms seems to not work to the fullest extent. The layout seems to be off, as boxes are in the wrong place or not the full width it suppose to be. Functionality of the forms work as they should. I had been problem solving this for a few days. With that being said I have asked the slack community what they had thought, yet no response. [Crispy forms query](https://code-institute-room.slack.com/archives/C026PTF46F5/p1738750770135619).
+- Crispy forms seem to not work to the fullest extent. The layout seems to be off, as boxes are in the wrong place or not the full width it is supposed to be. The functionality of the forms works as it should. I had been problem-solving this for a few days. With that being said I have asked the Slack community what they had thought, yet no response. [Crispy forms query](https://code-institute-room.slack.com/archives/C026PTF46F5/p1738750770135619).
 
 <br>
-  <details>
-  <summary>Current Console Message</summary>
-  <IMG src="readme/validation/console-message.png"  alt="Console message"/>
+  <details>
+  <summary>Current Console Message</summary>
+  <IMG src="readme/validation/console-message.png"  alt="Console message"/>
 
 </details>
 
 ### Fixed Bugs
 
-- Sorting and filtering via ascending descending was not consitently working for some categories. In order to fix this, I had to change the if statement to include elif to handle the logic correctly.
-- Payment input box was not display due to file path and typo within views.
-- Recieved "Bad Request: /checkout/cache_checkout_data/" after debugging my stripe_elements.js, checkout views.py and checkout.html. I found that JSON was not imported within checkout views.py file. After adding this payments and webhooks where successful again.
-- Order history was unable to be view when clicked due to no import of the order model.
-- Product management form displayed a 'BoundWidget' object has no attribute 'field' error. As I was trying to access the fields directly in the template in an invalid manner. I have removed the field from the form and tried {{ product_form|crispy }} instead.
-- When deleting products in the admin view, a page 404 error would display on the site. Making the site unusable, this was due to the products being deleted where still in the session ID.
-- Due to migrating to VScode mid project there were numerous amounts of issue on VScode, from stripe elements, edit function, terminal commands to project missing files and not running. I decided to work as much as possible on the original workspace I was using, Gitpod. This resolved alot of issue for me and I was able to continue and finish the project within the given time. I had manually make the merge for the changes I made when trying to code on VScode.
-- Django countries version was newer than the django version I was using, this caused issue in deployment as django countries had some incompatibilities. To over come this, I had to install the LTS version Django. Version 4.2 in particular. I have a runtime.txt to ensure the version of Python 3.12 was used in this project.
+- Sorting and filtering via ascending descending was not consistently working for some categories. In order to fix this, I had to change the if statement to include elif to handle the logic correctly.
+- Payment input box was not displayed due to file path and typo within views.
+- Recieved "Bad Request: /checkout/cache_checkout_data/" after debugging my stripe_elements.js, checkout views.py and checkout.html. I found that JSON was not imported within the checkout views.py file. After adding this payments and webhooks were successful again.
+- Order history was unable to be viewed when clicked due to no import of the order model.
+- Product management form displayed a 'BoundWidget' object that has no attribute 'field' error. I was trying to access the fields directly in the template in an invalid manner. I have removed the field from the form and tried {{ product_form|crispy }} instead.
+- When deleting products in the admin view, a page 404 error would display on the site. Making the site unusable, this was due to the products being deleted were still in the session ID.
+- Due to migrating to the VScode mid-project there were numerous amounts of issues on VScode, from stripe elements, edit function, and terminal commands to project missing files and not running. I decided to work as much as possible on the original workspace I was using, Gitpod. This resolved a lot of issues for me and I was able to continue and finish the project within the given time. I had to manually make the merge for the changes I made when trying to code on VScode.
+- The Django countries version was newer than the Django version I was using, this caused the issue in deployment as Django countries had some incompatibilities. To overcome this, I had to install the LTS version of Django. Version 4.2 in particular. I have a runtime.txt to ensure the version of Python 3.12 was used in this project.
 - Favicon 404 error due to not accessing it through {% static 'path here' %}.
-- Server 500 error that was related to my custom-clearable-widget template was not being accessed correctly. Due to making my project complient with Flake8, I had broken the line where this template was being accessed. I undone the change to the file and everything was able to be accessed and used correctly.
+- Server 500 error that was related to my custom-clearable widget template was not being accessed correctly. Due to making my project compliant with Flake8, I had broken the line where this template was being accessed. I undone the change to the file and everything was able to be accessed and used correctly.
 
 ## Deployments
 
@@ -363,7 +382,7 @@ This project was deployed to GitHub Pages using the steps below;
 5. Underneath build and deployment, there are two sub-heading 'Source' and 'Branch'. Select the 'None' dropdown below the branch sub-heading.
 6. Change the 'None' option to 'Main', then press "Save".
 7. Wait a few moments whilst the pages refresh. (This could take up to 5 minutes.)
-8. You may need to refresh the page, to see the saved changes. You should have seen that the site and the link to the live site. An orange icon will display which will indicate that the save changes are still loading.
+8. You may need to refresh the page, to see the saved changes. You should have seen the site and the link to the live site. An orange icon will display which will indicate that the save changes are still loading.
 9. You can also check your deployment by selecting 'Code'. On the right-hand side, you should see 'Deployments'. Select 'Deployments' to view the status of your deployments.
 
 ### How to run this project locally.
@@ -400,21 +419,21 @@ To fork this project from Gitpod, please follow the steps below;
 
 To deploy to Heroku, follow the steps below;
 
-1. Within your project coding environment. Open the terminal and generate a requirements file via typing " pip freeze --local > requirements.txt "
+1. Within your project coding environment. Open the terminal and generate a requirements file by typing " pip freeze --local > requirements.txt "
 2. In the root directory create a file called Procfile, ensure that a capital "P" is used to ensure Heroku reads this. Then within this file add " web: python run.py.
 3. Use a database or object storage instead of writing to your local filesystem.
 4. In Heroku, create a new app.
-5. Add a app name. Complete language-specific setup.
+5. Add an app name. Complete language-specific setup.
 6. Select "Create App".
 7. Explore the Heroku platform.
-8. Within the settings, click "Reveal Config Vars". Use the variable within the env.py. Ensure that DEBUG, DEVELOPMENT and DB_URL is not included. As well as no strings in qoutes when adding the values.
+8. Within the settings, click "Reveal Config Vars". Use the variable within the env.py. Ensure that DEBUG, DEVELOPMENT and DB_URL are not included. As well as no strings in quotes when adding the values.
 9. Locate to the Deploy tab and navigate towards the "Deployment method" section, select “Connect to GitHub”.
 10. Search for your repository and click Connect.
 11. You can click "Enable Automatic Deploys" in case of any further changes to the project. This will push over when you make the push to GitHub.
-12. If you are using the Manual deploy section and click Deploy Branch. This will start the build process.
-    <br> <strong>Note: If any changes are made to models you will need to manually make the migrations within Heroku.</strong>
-13. The app should running now, click the “Open app” button.
-    <br> <strong>Note: The deployed app will load, but as the new database is empty you will need to add in some data.</strong>
+12. If you are using the Manual Deploy section click Deploy Branch. This will start the build process.
+        <br> <strong>Note: If any changes are made to models you will need to manually make the migrations within Heroku.</strong>
+13. The app should run now, click the “Open app” button.
+        <br> <strong>Note: The deployed app will load, but as the new database is empty you will need to add in some data.</strong>
 
 ## Credits
 
@@ -442,8 +461,8 @@ To deploy to Heroku, follow the steps below;
 
 ### Acknowledgments
 
-- Friends and Family that tested and supported through my final project. Aswell the entirety of the course
-- Tutor support for helping me during deployment and migration as there were some bugs that I wasnt able to fix.
-- Slack community as they had helped me during my migrating progess. As well as this, reading through similar issue/bugs that I faced in the project.
+- Friends and Family who tested and supported me through my final project. As well as the entirety of the course
+- Tutor support for helping me during deployment and migration as there were some bugs that I wasn't able to fix.
+- Slack community as they had helped me during my migrating progress, though I had chosen to use gitpod. As well as this, reading through similar issues/bugs that I faced in the project.
 
 [Back to top](#title)

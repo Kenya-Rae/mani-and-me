@@ -23,7 +23,9 @@ def add_to_bag(request, item_id):
 
     # Check the inventory for the selected size if applicable
     if size:
-        inventory = Inventory.objects.filter(product=product, size=size).first()
+        inventory = Inventory.objects.filter(
+            product=product, size=size
+            ).first()
         if inventory and inventory.quantity < quantity:
             messages.error(request,
                            f"Not enough stock for size \
@@ -88,7 +90,9 @@ def adjust_shopping_bag(request, item_id):
 
     # Handle size-specific logic
     if size:
-        inventory = Inventory.objects.filter(product=product, size=size).first()
+        inventory = Inventory.objects.filter(
+            product=product, size=size
+            ).first()
         if inventory and inventory.quantity < quantity:
             messages.error(request,
                            f"Not enough stock for size \

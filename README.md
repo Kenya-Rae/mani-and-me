@@ -94,13 +94,14 @@ As the site owner I want:
 
 ## Design Choices
 
-### Languages Used
+### Main Technologies, Languages, Libaries and APIs Used
 
 - HTML
 - CSS
 - JavaScript
 - Django + Python
 - Relational database
+- Flake8
 
 ### Fonts
 

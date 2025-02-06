@@ -17,7 +17,7 @@
         <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-touch-icon.png'}">
         <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon-32x32.png'}">
         <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon-16x16.png' %}">
-        <link rel="manifest" href="{{ MEDIA_URL }}/site.webmanifest">
+        <link rel="manifest" href="{% static 'site.webmanifest' %}">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
         <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="{% static 'css/base.css' %}">
@@ -67,7 +67,7 @@
           <div class="col-12 col-lg-4 my-auto py-1 py-lg-0">
               <ul class="list-inline list-unstyled text-center text-lg-right my-0">
                 <li class="list-inline-item dropdown">
-                    <a class="text-black nav-link" href="#" id="user-options" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="text-black nav-link" href="#" id="about-options" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <div class="text-center">
                             <div><i class="fa-solid fa-circle-info"></i></div>
                             <p class="my-0">About Us</p>

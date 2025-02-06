@@ -99,8 +99,8 @@ As the site owner I want:
 - HTML
 - CSS
 - JavaScript
-- Django
-- Python
+- Django + Python
+- Relational database
 
 ### Fonts
 
@@ -147,7 +147,7 @@ The current features on the site are to ensure that users have a positve experie
 - Responsive design for mobile, tablet and desktop.
 - Contact and about us information.
 - Images along with content.
-- Logo.
+- Logo and favicon icon.
 - Search functionality.
 - Security/validations.
 - Superusers have the ability to add, edit and delete products from site and admin view.
@@ -165,6 +165,8 @@ As I hope to make this a live site for a relative. There are a few things that I
 - Tracking on deliveries for users. As well as different types of shipping.
 - It would also be beneficial to add different payment options to the site instead of just card payments.
 - Sales data/ customer insight pages/reports to understand trends and making improvements to marketing decisions.
+- In the near future I would like to develope the profile section more, allowing settings, delete profile functionality.
+- Add more security to the site overall once(if) this site becomes a used one.
 
 ### Loaded page:
 
@@ -233,7 +235,8 @@ When you first load on the page you are met with the homepage.
 
 ## Accessibility
 
--
+- Limited bright colours to reduce the contrasts.
+- Added name tags to elements, included alt tags to images.
 
 ## Testing
 
@@ -258,13 +261,20 @@ When you first load on the page you are met with the homepage.
 
 ### For this project I have had friends and family, test amongst various devices. Such as;
 
--
+- I had a hand few test the deployed site. There was no overall negative feedback other than a server error that happened when accessing edit/add products. Which was quickly resolved. The feedback given was that the site was easy to use and understand. As i had asked each testers to use the site as a new user, returning user and superuser. Some features/pages stood out more than others, generally a good user experience.
+
+## The devices that the site was tested on :
+
+- iPhone 11 Pro
+- HP Pavillion 17 Laptop
+- iPad 10th Gen
+- iPhone XR
 
 ### Lighthouse - Developer Chrome Tools
 
 <details>
 <summary>Lighthouse Overview</summary>
-<IMG src="readme/validation/"  alt="Lighthouse Overview Score"/>
+<IMG src="readme/validation/lighthouse.png"  alt="Lighthouse Overview Score"/>
 </details>
 <br>
 
@@ -282,7 +292,7 @@ W3c was used to validate HTML, CSS. JShint was used for JavaScript code.
 
 <details>
 <summary>HTML Validator Overview Part 1</summary>
-<IMG src=""  alt="HTML Validator Overview Part 1"/>
+<IMG src="readme/validation/html-validators.png"  alt="HTML Validator Overview Part 1"/>
 </details>
 <br>
 <details>
@@ -297,21 +307,23 @@ W3c was used to validate HTML, CSS. JShint was used for JavaScript code.
 <br>
 <details>
 <summary>CSS Validator </summary>
-<IMG src=""  alt="CSS Validator "/>
+<IMG src="readme/validation/css-validator.png"  alt="CSS Validator"/>
 </details>
 
 ### JavaScript Validator:
 
 <details>
 <summary>JavaScript Validator</summary>
-<IMG src=""  alt="JavaScript Validator Results"/>
+<IMG src="readme/validation/js-validator-1.png"  alt="JavaScript Validator Results"/>
+<IMG src="readme/validation/js-validator-2.png"  alt="JavaScript Validator Results pt2"/>
+<IMG src="readme/validation/js-validator-3.png"  alt="JavaScript Validator Results pt3"/>
 </details>
 
 ## Bugs
 
 ### Current Bugs
 
-- Crispy forms seems to not work to the fullest extent. The layout seems to be off, as boxes are in the wrong place or not the full width it suppose to be. Functionality of the forms work as they should.
+- Crispy forms seems to not work to the fullest extent. The layout seems to be off, as boxes are in the wrong place or not the full width it suppose to be. Functionality of the forms work as they should. I had been problem solving this for a few days. With that being said I have asked the slack community what they had thought, yet no response. [Crispy forms query](https://code-institute-room.slack.com/archives/C026PTF46F5/p1738750770135619).
 
 <br>
   <details>
@@ -330,6 +342,7 @@ W3c was used to validate HTML, CSS. JShint was used for JavaScript code.
 - When deleting products in the admin view, a page 404 error would display on the site. Making the site unusable, this was due to the products being deleted where still in the session ID.
 - Django countries version was newer than the django version I was using, this caused issue in deployment as django countries had some incompatibilities. To over come this, I had to install the LTS version Django. Version 4.2 in particular.
 - Favicon 404 error due to not accessing it through {% static 'path here' %}.
+- Server 500 error that was related to my custom-clearable-widget template was not being accessed correctly. Due to making my project complient with Flake8, I had broken the line where this template was being accessed. I undone the change to the file and everything was able to be accessed and used correctly.
 
 ## Deployments
 

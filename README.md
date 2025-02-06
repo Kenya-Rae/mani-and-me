@@ -145,8 +145,11 @@ The current features on the site are to ensure that users have a positve experie
 
 - Easy naviagtion across the whole site, for products and site/profile.
 - Responsive design for mobile, tablet and desktop.
+- Grid or list view for easier viewing .
+- Sort and filtering for products.
 - Contact and about us information.
 - Images along with content.
+- Wishlist, signed in user can create a wishlist and view them.
 - Logo and favicon icon.
 - Search functionality.
 - Security/validations.

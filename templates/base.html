@@ -11,15 +11,20 @@
     {% endblock %}
 
     {% block extra_meta %}
+        <meta name="description" content="Mani & Me is site that sells beautifully printed gifts for all.">
+        <meta name="keywords" content="personalised, gifts, ecommerce">
     {% endblock %}
 
     {% block corecss %}
-        <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-touch-icon.png'}">
-        <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon-32x32.png'}">
+        <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-touch-icon.png' %}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon-32x32.png' %}">
         <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon-16x16.png' %}">
         <link rel="manifest" href="{% static 'site.webmanifest' %}">
+        <!-- Bootstrap -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+        <!-- Google Fonts -->
+        <link rel="preload" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+
         <link rel="stylesheet" href="{% static 'css/base.css' %}">
     {% endblock %}
 
@@ -27,7 +32,9 @@
     {% endblock %}
 
     {% block corejs %}
+        <!-- Font Awesome -->
         <script src="https://kit.fontawesome.com/730b9a0988.js" crossorigin="anonymous"></script>
+        <!-- jQuery, Popper.js & Bootstrap JS -->
         <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
@@ -73,7 +80,7 @@
                             <p class="my-0">About Us</p>
                         </div>
                     </a>
-                    <div class="dropdown-menu border-0" aria-labelledby="user-options">
+                    <div class="dropdown-menu border-0" aria-labelledby="about-options">
                             <a href="{% url 'about_us' %}" class="dropdown-item">About Us</a>
                             <a href="{% url 'contact_us' %}" class="dropdown-item">Contact Infomation</a>
                     </div>

@@ -12,6 +12,10 @@
     <div class="overlay"></div>
     <div class="container">
         <h2>Your Wishlist</h2>
+        <a type="button" class="btn btn-sm float-left go-back" onclick="history.back()">
+            <i class="fa-solid fa-sm fa-arrow-left"></i>
+                Go Back
+        </a>
         {% if wishlist_items %}
             <ul class="list-unstyled">
                 {% for item in wishlist_items %}
